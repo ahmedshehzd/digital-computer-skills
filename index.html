@@ -2,194 +2,183 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Student Management System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Focus Student Portal</title>
 
 <style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
 body{
-    font-family: Arial;
-    margin:0;
-    background:#0f172a;
-    color:white;
+display:flex;
+background:#f4f6f9;
 }
 
-/* Top Header */
-.header{
-    background:#1e293b;
-    padding:15px;
-    text-align:center;
-    font-size:22px;
-    font-weight:bold;
+.sidebar{
+width:250px;
+height:100vh;
+background:#0f172a;
+color:white;
+padding:20px;
 }
 
-/* Login Box */
-.container{
-    width:300px;
-    margin:80px auto;
-    background:#1e293b;
-    padding:20px;
-    border-radius:10px;
+.sidebar h2{
+margin-bottom:30px;
 }
 
-input, select{
-    width:100%;
-    padding:10px;
-    margin:8px 0;
-    border:none;
-    border-radius:5px;
+.sidebar ul{
+list-style:none;
 }
 
-button{
-    width:100%;
-    padding:10px;
-    background:#22c55e;
-    border:none;
-    color:white;
-    font-weight:bold;
-    cursor:pointer;
-    border-radius:5px;
+.sidebar li{
+padding:12px;
+margin:8px 0;
+background:#1e293b;
+border-radius:8px;
+cursor:pointer;
 }
 
-button:hover{
-    background:#16a34a;
+.main{
+flex:1;
+padding:20px;
 }
 
-/* Dashboard */
-.dashboard{
-    display:none;
-    padding:20px;
+.topbar{
+background:white;
+padding:15px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
 }
 
 .card{
-    background:#1e293b;
-    padding:15px;
-    margin:10px 0;
-    border-radius:10px;
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
 
-.progress{
-    height:10px;
-    background:#334155;
-    border-radius:5px;
+.student-table{
+background:white;
+margin-top:20px;
+padding:20px;
+border-radius:10px;
 }
 
-.progress-bar{
-    height:10px;
-    background:#22c55e;
-    width:50%;
-    border-radius:5px;
+table{
+width:100%;
+border-collapse:collapse;
 }
 
-.plus{
-    font-size:25px;
-    background:#22c55e;
-    width:40px;
-    height:40px;
-    text-align:center;
-    border-radius:50%;
-    cursor:pointer;
-    margin:10px 0;
+table th,table td{
+padding:12px;
+border-bottom:1px solid #ddd;
+}
+
+.add-btn{
+background:#22c55e;
+color:white;
+padding:10px 15px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+float:right;
 }
 </style>
-</head>
 
+</head>
 <body>
 
-<div class="header">Computer Course Management System</div>
+<div class="sidebar">
 
-<!-- LOGIN SCREEN -->
-<div id="loginBox" class="container">
+<h2>Focus Portal</h2>
 
-<h3>Login</h3>
-
-<select id="role">
-<option value="teacher">Teacher Login</option>
-<option value="student">Student Login</option>
-</select>
-
-<input type="text" id="username" placeholder="Username">
-<input type="password" id="password" placeholder="Password">
-
-<button onclick="login()">Login</button>
+<ul>
+<li>Dashboard</li>
+<li>Students</li>
+<li>Courses</li>
+<li>Daily Classes</li>
+<li>Attendance</li>
+<li>Progress</li>
+<li>Profile</li>
+<li>Logout</li>
+</ul>
 
 </div>
 
-<!-- TEACHER DASHBOARD -->
-<div id="teacherDashboard" class="dashboard">
+<div class="main">
 
+<div class="topbar">
 <h2>Teacher Dashboard</h2>
+</div>
 
-<div class="plus" onclick="addStudent()">+</div>
-<p>Add New Student</p>
+<div class="cards">
 
 <div class="card">
-<h3>Student List</h3>
-<div id="studentList"></div>
-</div>
-
-</div>
-
-<!-- STUDENT DASHBOARD -->
-<div id="studentDashboard" class="dashboard">
-
-<h2>Student Dashboard</h2>
-
-<div class="card">
-<h3>Your Progress</h3>
-
-<div class="progress">
-<div class="progress-bar"></div>
-</div>
-
-<p>Course: MS Excel</p>
+<h3>Total Students</h3>
+<h1>120</h1>
 </div>
 
 <div class="card">
-<h3>Today's Class</h3>
-<p>Topic: Basic Formulas</p>
-<p>Description: Today we learned SUM and AVERAGE formulas.</p>
+<h3>Courses</h3>
+<h1>8</h1>
+</div>
+
+<div class="card">
+<h3>Today's Classes</h3>
+<h1>4</h1>
+</div>
+
+<div class="card">
+<h3>Attendance</h3>
+<h1>95%</h1>
 </div>
 
 </div>
 
-<script>
+<div class="student-table">
 
-let students = [];
+<button class="add-btn">+ Add Student</button>
 
-function login(){
-    let role = document.getElementById("role").value;
-    
-    document.getElementById("loginBox").style.display="none";
+<h2>Students List</h2>
 
-    if(role === "teacher"){
-        document.getElementById("teacherDashboard").style.display="block";
-    } else {
-        document.getElementById("studentDashboard").style.display="block";
-    }
-}
+<table>
 
-/* Add Student */
-function addStudent(){
-    let name = prompt("Enter Student Name:");
-    let pass = prompt("Set Password:");
+<tr>
+<th>Name</th>
+<th>Course</th>
+<th>Progress</th>
+<th>Status</th>
+</tr>
 
-    students.push({name:name, pass:pass});
+<tr>
+<td>Ahmed</td>
+<td>MS Excel</td>
+<td>75%</td>
+<td>Active</td>
+</tr>
 
-    renderStudents();
-}
+<tr>
+<td>Ali</td>
+<td>Graphic Design</td>
+<td>50%</td>
+<td>Active</td>
+</tr>
 
-/* Show Students */
-function renderStudents(){
-    let list = document.getElementById("studentList");
-    list.innerHTML = "";
+</table>
 
-    students.forEach((s,i)=>{
-        list.innerHTML += `
-        <p>👨‍🎓 ${s.name} - Password: ${s.pass}</p>
-        `;
-    });
-}
+</div>
 
-</script>
+</div>
 
 </body>
 </html>

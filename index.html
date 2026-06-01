@@ -1,30 +1,176 @@
-Commit 67a3183
-ahmedshehzd
-ahmedshehzd
-authored
-in 12 hours
-·
-·
-Verified
-Rename digital-computer-skill.html to index.html
-main
-1 parent 
-5565ae4
- commit 
-67a3183
-1 file changed
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Progress System</title>
+<style>
+body{font-family:Arial;background:#f4f4f4;margin:0;padding:20px}
+.box{background:#fff;padding:15px;border-radius:10px;max-width:500px;margin:auto}
+input,button{width:100%;padding:10px;margin:5px 0}
+button{background:black;color:white;border:none;cursor:pointer}
+.hidden{display:none}
+.student{padding:10px;background:#eee;margin:5px 0;cursor:pointer}
+.task{display:flex;align-items:center;gap:10px}
+.progress{background:#ddd;height:20px;border-radius:10px;overflow:hidden}
+.bar{height:20px;background:green;width:0%}
+</style>
+</head>
 
-+1
--1
-Lines changed: 1 addition & 1 deletion
-File tree
-Filter files…
-index.html
-Search within code
- 
-‎digital-computer-skill.html‎  ‎index.html‎digital-computer-skill.html renamed to index.html
-+1
--1
-Lines changed: 1 addition & 1 deletion
-Original file line number	Diff line number	Diff line change
-@@ -1,445 +1,445 @@
+<body>
+
+<div class="box">
+
+<h2>Login</h2>
+
+<input id="user" placeholder="Name">
+<input id="pass" placeholder="Password">
+
+<button onclick="teacherLogin()">Teacher Login</button>
+<button onclick="studentLogin()">Student Login</button>
+
+<hr>
+
+<div id="teacherPanel" class="hidden">
+
+<h2>Teacher Panel</h2>
+
+<input id="newStudent" placeholder="Add Student Name">
+<button onclick="addStudent()">Add Student</button>
+
+<div id="students"></div>
+
+<hr>
+
+<h3>Selected Student Tasks</h3>
+<input id="taskText" placeholder="Add Task">
+<button onclick="addTask()">Add Task</button>
+
+<div class="progress"><div class="bar" id="bar"></div></div>
+<p id="percent"></p>
+
+<div id="taskList"></div>
+
+<hr>
+
+<h3>Activity Log</h3>
+<input id="logText" placeholder="Work done">
+<input id="logDate" placeholder="Date (e.g 01-06-2026)">
+<button onclick="addLog()">Add Log</button>
+
+<div id="logs"></div>
+
+</div>
+
+</div>
+
+<script>
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+let selected = null;
+
+function teacherLogin(){
+ if(document.getElementById("pass").value === "628628"){
+   document.getElementById("teacherPanel").classList.remove("hidden");
+   loadStudents();
+ } else {
+   alert("Wrong Password");
+ }
+}
+
+function studentLogin(){
+ alert("Student login demo (simple view)");
+}
+
+function addStudent(){
+ let name = document.getElementById("newStudent").value;
+
+ if(students.find(s=>s.name===name)){
+   alert("Already exists");
+   return;
+ }
+
+ students.push({name, tasks:[], logs:[]});
+ localStorage.setItem("students", JSON.stringify(students));
+ loadStudents();
+}
+
+function loadStudents(){
+ let div = document.getElementById("students");
+ div.innerHTML="";
+
+ students.forEach((s,i)=>{
+   div.innerHTML += `<div class='student' onclick='selectStudent(${i})'>${s.name}</div>`;
+ });
+}
+
+function selectStudent(i){
+ selected = i;
+ loadTasks();
+ loadLogs();
+}
+
+function addTask(){
+ if(selected===null) return;
+
+ let t = document.getElementById("taskText").value;
+ students[selected].tasks.push({text:t,done:false});
+
+ localStorage.setItem("students",JSON.stringify(students));
+ loadTasks();
+}
+
+function loadTasks(){
+ if(selected===null) return;
+
+ let div = document.getElementById("taskList");
+ div.innerHTML="";
+
+ let tasks = students[selected].tasks;
+ let done = 0;
+
+ tasks.forEach((t,i)=>{
+   if(t.done) done++;
+
+   div.innerHTML += `
+   <div class='task'>
+   <input type='checkbox' onchange='toggleTask(${i})' ${t.done?"checked":""}>
+   ${t.text}
+   </div>`;
+ });
+
+ let percent = tasks.length ? Math.round((done/tasks.length)*100) : 0;
+ document.getElementById("bar").style.width = percent+"%";
+ document.getElementById("percent").innerText = percent+"% Completed";
+}
+
+function toggleTask(i){
+ students[selected].tasks[i].done = !students[selected].tasks[i].done;
+ localStorage.setItem("students",JSON.stringify(students));
+ loadTasks();
+}
+
+function addLog(){
+ if(selected===null) return;
+
+ let text = document.getElementById("logText").value;
+ let date = document.getElementById("logDate").value;
+
+ students[selected].logs.push({text,date});
+ localStorage.setItem("students",JSON.stringify(students));
+ loadLogs();
+}
+
+function loadLogs(){
+ if(selected===null) return;
+
+ let div = document.getElementById("logs");
+ div.innerHTML="";
+
+ students[selected].logs.forEach(l=>{
+   div.innerHTML += `<div>📅 ${l.date} - ${l.text}</div>`;
+ });
+}
+
+</script>
+
+</body>
+</html>

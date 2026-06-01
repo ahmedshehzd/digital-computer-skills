@@ -1,198 +1,192 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Digital Computer Skill System</title>
+<meta charset="UTF-8">
+<title>Student Management System</title>
+
 <style>
-body{font-family:Arial;background:#f4f4f4;margin:0;padding:20px}
-.box{background:#fff;padding:15px;border-radius:10px;max-width:600px;margin:auto}
-input,button{width:100%;padding:10px;margin:5px 0}
-button{background:black;color:white;border:none;cursor:pointer}
-.hidden{display:none}
-.student{padding:10px;background:#eee;margin:5px 0;cursor:pointer}
-.task{display:flex;align-items:center;gap:10px}
-.progress{background:#ddd;height:20px;border-radius:10px;overflow:hidden}
-.bar{height:20px;background:green;width:0%}
+body{
+    font-family: Arial;
+    margin:0;
+    background:#0f172a;
+    color:white;
+}
+
+/* Top Header */
+.header{
+    background:#1e293b;
+    padding:15px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* Login Box */
+.container{
+    width:300px;
+    margin:80px auto;
+    background:#1e293b;
+    padding:20px;
+    border-radius:10px;
+}
+
+input, select{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    border:none;
+    border-radius:5px;
+}
+
+button{
+    width:100%;
+    padding:10px;
+    background:#22c55e;
+    border:none;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    border-radius:5px;
+}
+
+button:hover{
+    background:#16a34a;
+}
+
+/* Dashboard */
+.dashboard{
+    display:none;
+    padding:20px;
+}
+
+.card{
+    background:#1e293b;
+    padding:15px;
+    margin:10px 0;
+    border-radius:10px;
+}
+
+.progress{
+    height:10px;
+    background:#334155;
+    border-radius:5px;
+}
+
+.progress-bar{
+    height:10px;
+    background:#22c55e;
+    width:50%;
+    border-radius:5px;
+}
+
+.plus{
+    font-size:25px;
+    background:#22c55e;
+    width:40px;
+    height:40px;
+    text-align:center;
+    border-radius:50%;
+    cursor:pointer;
+    margin:10px 0;
+}
 </style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="header">Computer Course Management System</div>
 
-<h2>Login</h2>
+<!-- LOGIN SCREEN -->
+<div id="loginBox" class="container">
 
-<input id="name" placeholder="Name">
-<input id="pass" placeholder="Password">
+<h3>Login</h3>
 
-<button onclick="teacherLogin()">Teacher Login</button>
-<button onclick="studentLogin()">Student Login</button>
+<select id="role">
+<option value="teacher">Teacher Login</option>
+<option value="student">Student Login</option>
+</select>
 
-<hr>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
 
-<div id="teacherPanel" class="hidden">
+<button onclick="login()">Login</button>
+
+</div>
+
+<!-- TEACHER DASHBOARD -->
+<div id="teacherDashboard" class="dashboard">
 
 <h2>Teacher Dashboard</h2>
 
-<input id="newStudent" placeholder="New Student Name">
-<input id="newPass" placeholder="Set Password">
-<button onclick="addStudent()">Add Student</button>
+<div class="plus" onclick="addStudent()">+</div>
+<p>Add New Student</p>
 
-<div id="students"></div>
+<div class="card">
+<h3>Student List</h3>
+<div id="studentList"></div>
+</div>
 
-<hr>
+</div>
 
-<h3>Tasks</h3>
-<input id="taskText" placeholder="Add Task">
-<button onclick="addTask()">Add Task</button>
+<!-- STUDENT DASHBOARD -->
+<div id="studentDashboard" class="dashboard">
 
-<div class="progress"><div class="bar" id="bar"></div></div>
-<p id="percent"></p>
+<h2>Student Dashboard</h2>
 
-<div id="taskList"></div>
+<div class="card">
+<h3>Your Progress</h3>
 
-<hr>
+<div class="progress">
+<div class="progress-bar"></div>
+</div>
 
-<h3>Activity Log</h3>
-<input id="logText" placeholder="Work done">
-<input id="logDate" placeholder="Date">
-<button onclick="addLog()">Add Log</button>
+<p>Course: MS Excel</p>
+</div>
 
-<div id="logs"></div>
-
+<div class="card">
+<h3>Today's Class</h3>
+<p>Topic: Basic Formulas</p>
+<p>Description: Today we learned SUM and AVERAGE formulas.</p>
 </div>
 
 </div>
 
 <script>
 
-let students = JSON.parse(localStorage.getItem("students")) || [];
-let selected = null;
+let students = [];
 
-// TEACHER LOGIN
-function teacherLogin(){
- if(document.getElementById("pass").value === "628628"){
-   document.getElementById("teacherPanel").classList.remove("hidden");
-   loadStudents();
- } else {
-   alert("Wrong Teacher Password");
- }
+function login(){
+    let role = document.getElementById("role").value;
+    
+    document.getElementById("loginBox").style.display="none";
+
+    if(role === "teacher"){
+        document.getElementById("teacherDashboard").style.display="block";
+    } else {
+        document.getElementById("studentDashboard").style.display="block";
+    }
 }
 
-// STUDENT LOGIN
-function studentLogin(){
- let name = document.getElementById("name").value;
- let pass = document.getElementById("pass").value;
-
- let user = students.find(s => s.name === name && s.pass === pass);
-
- if(user){
-   alert("Student Login Success");
-   selected = students.indexOf(user);
-   loadTasks();
-   loadLogs();
-   document.getElementById("teacherPanel").classList.remove("hidden");
- } else {
-   alert("Invalid Student Login");
- }
-}
-
-// ADD STUDENT (NO DUPLICATE)
+/* Add Student */
 function addStudent(){
- let name = document.getElementById("newStudent").value;
- let pass = document.getElementById("newPass").value;
+    let name = prompt("Enter Student Name:");
+    let pass = prompt("Set Password:");
 
- if(students.find(s=>s.name===name)){
-   alert("Student Already Exists");
-   return;
- }
+    students.push({name:name, pass:pass});
 
- students.push({name, pass, tasks:[], logs:[]});
- localStorage.setItem("students", JSON.stringify(students));
- loadStudents();
+    renderStudents();
 }
 
-// LOAD STUDENTS
-function loadStudents(){
- let div = document.getElementById("students");
- div.innerHTML="";
+/* Show Students */
+function renderStudents(){
+    let list = document.getElementById("studentList");
+    list.innerHTML = "";
 
- students.forEach((s,i)=>{
-   div.innerHTML += `<div class='student' onclick='selectStudent(${i})'>${s.name}</div>`;
- });
-}
-
-// SELECT STUDENT
-function selectStudent(i){
- selected = i;
- loadTasks();
- loadLogs();
-}
-
-// ADD TASK
-function addTask(){
- if(selected===null) return;
-
- let t = document.getElementById("taskText").value;
-
- students[selected].tasks.push({text:t,done:false});
- localStorage.setItem("students",JSON.stringify(students));
- loadTasks();
-}
-
-// LOAD TASKS + PROGRESS
-function loadTasks(){
- if(selected===null) return;
-
- let div = document.getElementById("taskList");
- div.innerHTML="";
-
- let tasks = students[selected].tasks;
- let done = 0;
-
- tasks.forEach((t,i)=>{
-   if(t.done) done++;
-
-   div.innerHTML += `
-   <div class='task'>
-   <input type='checkbox' onchange='toggleTask(${i})' ${t.done?"checked":""}>
-   ${t.text}
-   </div>`;
- });
-
- let percent = tasks.length ? Math.round((done/tasks.length)*100) : 0;
- document.getElementById("bar").style.width = percent+"%";
- document.getElementById("percent").innerText = percent+"% Completed";
-}
-
-// TOGGLE TASK
-function toggleTask(i){
- students[selected].tasks[i].done = !students[selected].tasks[i].done;
- localStorage.setItem("students",JSON.stringify(students));
- loadTasks();
-}
-
-// ADD LOG
-function addLog(){
- if(selected===null) return;
-
- let text = document.getElementById("logText").value;
- let date = document.getElementById("logDate").value;
-
- students[selected].logs.push({text,date});
- localStorage.setItem("students",JSON.stringify(students));
- loadLogs();
-}
-
-// LOAD LOGS
-function loadLogs(){
- if(selected===null) return;
-
- let div = document.getElementById("logs");
- div.innerHTML="";
-
- students[selected].logs.forEach(l=>{
-   div.innerHTML += `<div>📅 ${l.date} - ${l.text}</div>`;
- });
+    students.forEach((s,i)=>{
+        list.innerHTML += `
+        <p>👨‍🎓 ${s.name} - Password: ${s.pass}</p>
+        `;
+    });
 }
 
 </script>

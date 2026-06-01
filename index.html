@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>School System Fixed</title>
+<title>School ERP + Student Profile</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -13,7 +13,6 @@
 body{
   background:#05060a;
   color:white;
-  height:100vh;
 }
 
 /* LOGIN */
@@ -25,8 +24,8 @@ body{
 }
 
 .card{
-  width:350px;
-  padding:30px;
+  width:360px;
+  padding:25px;
   background:rgba(255,255,255,0.05);
   border:1px solid rgba(255,255,255,0.1);
   border-radius:15px;
@@ -35,16 +34,17 @@ body{
 input{
   width:100%;
   padding:10px;
-  margin:8px 0;
+  margin:6px 0;
   border-radius:8px;
-  border:1px solid #333;
   background:#111;
+  border:1px solid #333;
   color:white;
 }
 
 button{
   width:100%;
   padding:10px;
+  margin-top:8px;
   background:linear-gradient(90deg,#00ffd5,#ff2bd6);
   border:none;
   border-radius:10px;
@@ -56,11 +56,12 @@ button{
 #dashboard{
   display:none;
   height:100vh;
+  display:flex;
 }
 
 /* SIDEBAR */
 .sidebar{
-  width:200px;
+  width:230px;
   background:#0b0f1a;
   padding:15px;
 }
@@ -85,14 +86,16 @@ button{
   padding:20px;
 }
 
-.section{
-  display:none;
-}
+.section{display:none;}
+.active{display:block;}
 
-.active{
-  display:block;
+.box{
+  padding:12px;
+  margin:8px 0;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:12px;
 }
-
 </style>
 </head>
 
@@ -101,10 +104,16 @@ button{
 <!-- LOGIN -->
 <div id="login">
   <div class="card">
-    <h2>Login</h2>
-    <input placeholder="Email">
-    <input type="password" placeholder="Password">
+    <h2>ERP Login</h2>
+
+    <input id="role" placeholder="student / teacher / admin">
+    <input id="pass" type="password" placeholder="Password">
+
     <button onclick="login()">Login</button>
+
+    <p style="font-size:12px;opacity:0.6;margin-top:10px;">
+      student:111 | teacher:222 | admin:333
+    </p>
   </div>
 </div>
 
@@ -112,39 +121,65 @@ button{
 <div id="dashboard">
 
   <div class="sidebar">
-    <h3>Menu</h3>
+    <h3>MENU</h3>
+
     <button onclick="show('home')">Dashboard</button>
-    <button onclick="show('marks')">Marks</button>
-    <button onclick="show('teacher')">Teacher</button>
+    <button onclick="show('profile')">Student Profile</button>
+    <button onclick="show('view')">All Profiles</button>
     <button onclick="logout()">Logout</button>
   </div>
 
   <div class="main">
 
+    <!-- HOME -->
     <div id="home" class="section active">
-      <h2>Dashboard</h2>
-      <p>Welcome to system</p>
+      <h2 id="welcome"></h2>
     </div>
 
-    <div id="marks" class="section">
-      <h2>Student Marks</h2>
-      <p>Ali - 85</p>
-      <p>Ahmed - 72</p>
+    <!-- STUDENT PROFILE FORM -->
+    <div id="profile" class="section">
+      <h2>Student Profile Form</h2>
+
+      <input id="name" placeholder="Name">
+      <input id="number" placeholder="Phone Number">
+      <input id="email" placeholder="Email">
+      <input id="course" placeholder="Course">
+
+      <button onclick="saveProfile()">Save Profile</button>
     </div>
 
-    <div id="teacher" class="section">
-      <h2>Teacher Panel</h2>
-      <button>Add Student</button>
+    <!-- VIEW PROFILES -->
+    <div id="view" class="section">
+      <h2>All Student Profiles</h2>
+      <div id="list"></div>
     </div>
 
   </div>
-
 </div>
 
 <script>
+
+let role="";
+let profiles=[];
+
 function login(){
-  document.getElementById("login").style.display="none";
-  document.getElementById("dashboard").style.display="flex";
+  let r=document.getElementById("role").value;
+  let p=document.getElementById("pass").value;
+
+  if((r==="student" && p==="111") ||
+     (r==="teacher" && p==="222") ||
+     (r==="admin" && p==="333")){
+
+    role=r;
+
+    document.getElementById("login").style.display="none";
+    document.getElementById("dashboard").style.display="flex";
+
+    document.getElementById("welcome").innerText="Welcome "+role.toUpperCase();
+
+  }else{
+    alert("Wrong Login");
+  }
 }
 
 function logout(){
@@ -153,11 +188,52 @@ function logout(){
 }
 
 function show(id){
-  document.querySelectorAll(".section").forEach(s=>{
-    s.classList.remove("active");
-  });
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
+
+  if(id==="view") renderProfiles();
 }
+
+/* SAVE PROFILE (ONLY STUDENT) */
+function saveProfile(){
+
+  if(role!=="student"){
+    alert("Only students can add profile");
+    return;
+  }
+
+  let n=document.getElementById("name").value;
+  let num=document.getElementById("number").value;
+  let e=document.getElementById("email").value;
+  let c=document.getElementById("course").value;
+
+  profiles.push({n,num,e,c});
+
+  alert("Profile Saved!");
+}
+
+/* SHOW ALL PROFILES */
+function renderProfiles(){
+
+  let box=document.getElementById("list");
+  box.innerHTML="";
+
+  profiles.forEach(p=>{
+    box.innerHTML+=`
+      <div class="box">
+        <b>${p.n}</b><br>
+        📞 ${p.num}<br>
+        📧 ${p.e}<br>
+        📚 ${p.c}
+      </div>
+    `;
+  });
+
+  if(profiles.length===0){
+    box.innerHTML="No profiles yet";
+  }
+}
+
 </script>
 
 </body>

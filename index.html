@@ -2,183 +2,269 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Focus Student Portal</title>
+<title>Teacher Class System</title>
 
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
 body{
-display:flex;
-background:#f4f6f9;
-}
-
-.sidebar{
-width:250px;
-height:100vh;
-background:#0f172a;
-color:white;
+font-family:Arial;
+background:#f4f4f4;
+margin:0;
 padding:20px;
 }
 
-.sidebar h2{
-margin-bottom:30px;
-}
-
-.sidebar ul{
-list-style:none;
-}
-
-.sidebar li{
-padding:12px;
-margin:8px 0;
-background:#1e293b;
-border-radius:8px;
-cursor:pointer;
-}
-
-.main{
-flex:1;
-padding:20px;
-}
-
-.topbar{
-background:white;
-padding:15px;
-border-radius:10px;
-margin-bottom:20px;
-}
-
-.cards{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:15px;
-}
-
-.card{
+.box{
 background:white;
 padding:20px;
-border-radius:10px;
-box-shadow:0 2px 5px rgba(0,0,0,0.1);
-}
-
-.student-table{
-background:white;
-margin-top:20px;
-padding:20px;
+max-width:700px;
+margin:auto;
 border-radius:10px;
 }
 
-table{
+input,button{
 width:100%;
-border-collapse:collapse;
+padding:10px;
+margin:5px 0;
 }
 
-table th,table td{
-padding:12px;
-border-bottom:1px solid #ddd;
-}
-
-.add-btn{
-background:#22c55e;
+button{
+background:black;
 color:white;
-padding:10px 15px;
 border:none;
-border-radius:8px;
 cursor:pointer;
-float:right;
+}
+
+.hidden{display:none;}
+
+.student{
+padding:10px;
+background:#eee;
+margin:5px 0;
+cursor:pointer;
+}
+
+.task{
+display:flex;
+align-items:center;
+gap:10px;
+margin:5px 0;
+}
+
+.progress{
+background:#ddd;
+height:20px;
+border-radius:10px;
+overflow:hidden;
+}
+
+.bar{
+height:20px;
+background:green;
+width:0%;
 }
 </style>
 
 </head>
+
 <body>
 
-<div class="sidebar">
+<div class="box">
 
-<h2>Focus Portal</h2>
+<h2>Teacher System Login</h2>
 
-<ul>
-<li>Dashboard</li>
-<li>Students</li>
-<li>Courses</li>
-<li>Daily Classes</li>
-<li>Attendance</li>
-<li>Progress</li>
-<li>Profile</li>
-<li>Logout</li>
-</ul>
+<input id="user" placeholder="Username">
+<input id="pass" placeholder="Password">
 
-</div>
+<button onclick="login()">Login</button>
 
-<div class="main">
+<hr>
 
-<div class="topbar">
+<div id="panel" class="hidden">
+
 <h2>Teacher Dashboard</h2>
+
+<input id="sname" placeholder="Student Name">
+<input id="spass" placeholder="Student Password">
+
+<button onclick="addStudent()">Add Student</button>
+
+<div id="students"></div>
+
+<hr>
+
+<h3>Tasks</h3>
+
+<input id="task" placeholder="Add Task">
+<button onclick="addTask()">Add Task</button>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
 </div>
 
-<div class="cards">
+<p id="percent"></p>
 
-<div class="card">
-<h3>Total Students</h3>
-<h1>120</h1>
-</div>
+<div id="taskList"></div>
 
-<div class="card">
-<h3>Courses</h3>
-<h1>8</h1>
-</div>
+<hr>
 
-<div class="card">
-<h3>Today's Classes</h3>
-<h1>4</h1>
-</div>
+<h3>Activity Log</h3>
 
-<div class="card">
-<h3>Attendance</h3>
-<h1>95%</h1>
-</div>
+<input id="logText" placeholder="Work done">
+<input id="logDate" placeholder="Date">
 
-</div>
+<button onclick="addLog()">Add Log</button>
 
-<div class="student-table">
-
-<button class="add-btn">+ Add Student</button>
-
-<h2>Students List</h2>
-
-<table>
-
-<tr>
-<th>Name</th>
-<th>Course</th>
-<th>Progress</th>
-<th>Status</th>
-</tr>
-
-<tr>
-<td>Ahmed</td>
-<td>MS Excel</td>
-<td>75%</td>
-<td>Active</td>
-</tr>
-
-<tr>
-<td>Ali</td>
-<td>Graphic Design</td>
-<td>50%</td>
-<td>Active</td>
-</tr>
-
-</table>
+<div id="logs"></div>
 
 </div>
 
 </div>
+
+<script>
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+let selected = null;
+
+// LOGIN
+function login(){
+let u = document.getElementById("user").value;
+let p = document.getElementById("pass").value;
+
+if(u === "Teacher" && p === "628628"){
+document.getElementById("panel").classList.remove("hidden");
+loadStudents();
+}
+else{
+alert("Wrong Username or Password");
+}
+}
+
+// ADD STUDENT
+function addStudent(){
+
+let name = document.getElementById("sname").value;
+let pass = document.getElementById("spass").value;
+
+if(students.find(s => s.name === name)){
+alert("Student already exists");
+return;
+}
+
+students.push({
+name:name,
+pass:pass,
+tasks:[],
+logs:[]
+});
+
+localStorage.setItem("students",JSON.stringify(students));
+loadStudents();
+}
+
+// LOAD STUDENTS
+function loadStudents(){
+
+let div = document.getElementById("students");
+div.innerHTML="";
+
+students.forEach((s,i)=>{
+div.innerHTML += `<div class="student" onclick="selectStudent(${i})">${s.name}</div>`;
+});
+
+}
+
+// SELECT STUDENT
+function selectStudent(i){
+selected = i;
+loadTasks();
+loadLogs();
+}
+
+// ADD TASK
+function addTask(){
+
+if(selected === null) return;
+
+let t = document.getElementById("task").value;
+
+students[selected].tasks.push({
+text:t,
+done:false
+});
+
+localStorage.setItem("students",JSON.stringify(students));
+loadTasks();
+}
+
+// LOAD TASKS
+function loadTasks(){
+
+if(selected === null) return;
+
+let div = document.getElementById("taskList");
+div.innerHTML="";
+
+let tasks = students[selected].tasks;
+let done = 0;
+
+tasks.forEach((t,i)=>{
+
+if(t.done) done++;
+
+div.innerHTML += `
+<div class="task">
+<input type="checkbox" onchange="toggle(${i})" ${t.done?"checked":""}>
+${t.text}
+</div>`;
+});
+
+let percent = tasks.length ? Math.round((done/tasks.length)*100) : 0;
+
+document.getElementById("bar").style.width = percent + "%";
+document.getElementById("percent").innerText = percent + "% Completed";
+
+}
+
+// TOGGLE TASK
+function toggle(i){
+
+students[selected].tasks[i].done =
+!students[selected].tasks[i].done;
+
+localStorage.setItem("students",JSON.stringify(students));
+loadTasks();
+}
+
+// ADD LOG
+function addLog(){
+
+if(selected === null) return;
+
+let text = document.getElementById("logText").value;
+let date = document.getElementById("logDate").value;
+
+students[selected].logs.push({
+text:text,
+date:date
+});
+
+localStorage.setItem("students",JSON.stringify(students));
+loadLogs();
+}
+
+// LOAD LOGS
+function loadLogs(){
+
+if(selected === null) return;
+
+let div = document.getElementById("logs");
+div.innerHTML="";
+
+students[selected].logs.forEach(l=>{
+div.innerHTML += `<div>📅 ${l.date} - ${l.text}</div>`;
+});
+}
+
+</script>
 
 </body>
 </html>

@@ -3,161 +3,66 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>School Dashboard</title>
+<title>School System</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg:#070A12;
+  --bg:#05060a;
   --panel:rgba(255,255,255,0.06);
   --stroke:rgba(255,255,255,0.12);
-  --text:#EAF2FF;
-  --muted:#8aa0b6;
   --neon:#00ffd5;
   --pink:#ff2bd6;
-  --yellow:#ffd000;
+  --text:#e7e7ff;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;font-family:"Space Grotesk",sans-serif;}
 
 body{
-  background:var(--bg);
+  background: radial-gradient(circle at top, #0b1020, #05060a);
   color:var(--text);
-  display:flex;
   height:100vh;
   overflow:hidden;
 }
 
-/* SIDEBAR */
-.sidebar{
-  width:240px;
-  background:rgba(255,255,255,0.03);
-  border-right:1px solid var(--stroke);
-  padding:20px;
-  backdrop-filter:blur(15px);
-}
-
-.logo{
-  font-weight:700;
-  letter-spacing:2px;
-  margin-bottom:30px;
-  color:var(--neon);
-}
-
-.nav button{
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border:none;
-  background:transparent;
-  color:var(--text);
-  text-align:left;
-  border-radius:10px;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-.nav button:hover{
-  background:rgba(0,255,213,0.08);
-  border-left:3px solid var(--neon);
-}
-
-/* MAIN */
-.main{
-  flex:1;
-  padding:25px;
-  overflow:auto;
-}
-
-/* TOP BAR */
-.topbar{
+/* LOGIN SCREEN */
+.login{
+  height:100vh;
   display:flex;
-  justify-content:space-between;
+  justify-content:center;
   align-items:center;
-  margin-bottom:20px;
-}
-
-.badge{
-  padding:6px 12px;
-  border:1px solid var(--stroke);
-  border-radius:20px;
-  font-size:12px;
-  color:var(--muted);
-}
-
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px;
+  flex-direction:column;
 }
 
 .card{
+  width:360px;
+  padding:35px;
   background:var(--panel);
   border:1px solid var(--stroke);
-  border-radius:15px;
-  padding:18px;
+  border-radius:18px;
   backdrop-filter:blur(15px);
-  box-shadow:0 0 30px rgba(0,255,213,0.05);
 }
 
-/* BIG SECTION */
-.section{
-  margin-top:20px;
-  display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:15px;
-}
+h2{margin-bottom:5px;}
 
-/* TABLE */
-table{
+p{opacity:0.7;font-size:13px;margin-bottom:20px;}
+
+input{
   width:100%;
-  margin-top:10px;
-  border-collapse:collapse;
-}
-
-th,td{
-  padding:10px;
-  text-align:left;
-  border-bottom:1px solid rgba(255,255,255,0.08);
-  font-size:14px;
-}
-
-th{
-  color:var(--neon);
-  font-weight:600;
-}
-
-/* PROGRESS BAR */
-.bar{
-  height:8px;
-  background:rgba(255,255,255,0.08);
+  padding:12px;
+  margin:8px 0;
   border-radius:10px;
-  overflow:hidden;
+  border:1px solid var(--stroke);
+  background:rgba(0,0,0,0.3);
+  color:white;
+  outline:none;
 }
 
-.fill{
-  height:100%;
-  background:linear-gradient(90deg,var(--neon),var(--pink));
-}
-
-/* TEACHER PANEL */
-.tag{
-  display:inline-block;
-  padding:4px 10px;
-  font-size:11px;
-  border-radius:20px;
-  margin-bottom:10px;
-}
-
-.teacher{border:1px solid var(--pink); color:var(--pink);}
-.student{border:1px solid var(--neon); color:var(--neon);}
-
-button.action{
-  margin-top:10px;
+button{
   width:100%;
-  padding:10px;
+  padding:12px;
+  margin-top:15px;
   border:none;
   border-radius:10px;
   background:linear-gradient(90deg,var(--neon),var(--pink));
@@ -166,114 +71,174 @@ button.action{
   cursor:pointer;
 }
 
+/* DASHBOARD */
+.dashboard{
+  display:none;
+  height:100vh;
+  display:flex;
+}
+
+.sidebar{
+  width:220px;
+  background:rgba(255,255,255,0.03);
+  border-right:1px solid var(--stroke);
+  padding:20px;
+}
+
+.logo{
+  color:var(--neon);
+  font-weight:700;
+  margin-bottom:20px;
+}
+
+.menu button{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  background:transparent;
+  border:none;
+  color:white;
+  text-align:left;
+  cursor:pointer;
+  border-radius:8px;
+}
+
+.menu button:hover{
+  background:rgba(0,255,213,0.1);
+}
+
+.main{
+  flex:1;
+  padding:20px;
+}
+
+.cardbox{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.box{
+  padding:15px;
+  background:var(--panel);
+  border:1px solid var(--stroke);
+  border-radius:15px;
+}
+
+table{
+  width:100%;
+  margin-top:20px;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:10px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+th{color:var(--neon);}
+
+/* hidden */
+.hidden{display:none;}
 </style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
-<div class="sidebar">
-  <div class="logo">SCHOOL OS</div>
+<!-- LOGIN -->
+<div id="loginPage" class="login">
+  <div class="card">
+    <h2>Login Portal</h2>
+    <p>Student & Teacher System</p>
 
-  <div class="nav">
-    <button>🏠 Dashboard</button>
-    <button>📊 Student Marks</button>
-    <button>🧑‍🏫 Teacher Panel</button>
-    <button>📅 Attendance</button>
-    <button>⚙ Settings</button>
+    <input id="user" type="text" placeholder="Email or ID">
+    <input id="pass" type="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
   </div>
 </div>
 
-<!-- MAIN -->
-<div class="main">
+<!-- DASHBOARD -->
+<div id="dashboard" class="dashboard">
 
-  <div class="topbar">
-    <h2>Dashboard Overview</h2>
-    <div class="badge">Session 2026 • Active</div>
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo">SCHOOL OS</div>
+
+    <div class="menu">
+      <button onclick="showSection('home')">Dashboard</button>
+      <button onclick="showSection('marks')">Marks</button>
+      <button onclick="showSection('teacher')">Teacher Panel</button>
+      <button onclick="logout()">Logout</button>
+    </div>
   </div>
 
-  <!-- STATS -->
-  <div class="grid">
+  <!-- MAIN -->
+  <div class="main">
 
-    <div class="card">
-      <div class="tag student">STUDENTS</div>
-      <h3>1,240</h3>
-      <p style="color:#8aa0b6;font-size:13px;">Total enrolled students</p>
+    <!-- HOME -->
+    <div id="home">
+      <h2>Welcome 👋</h2>
+
+      <div class="cardbox">
+        <div class="box">Students: 1200</div>
+        <div class="box">Teachers: 80</div>
+        <div class="box">Performance: 78%</div>
+      </div>
     </div>
 
-    <div class="card">
-      <div class="tag teacher">TEACHERS</div>
-      <h3>86</h3>
-      <p style="color:#8aa0b6;font-size:13px;">Active faculty members</p>
-    </div>
-
-    <div class="card">
-      <div class="tag" style="border-color:var(--yellow);color:var(--yellow);">AVERAGE</div>
-      <h3>78%</h3>
-      <p style="color:#8aa0b6;font-size:13px;">Overall performance</p>
-    </div>
-
-  </div>
-
-  <!-- MAIN SECTION -->
-  <div class="section">
-
-    <!-- STUDENT MARKS -->
-    <div class="card">
-      <h3>Student Marks</h3>
+    <!-- MARKS -->
+    <div id="marks" class="hidden">
+      <h2>Student Marks</h2>
 
       <table>
         <tr>
           <th>Name</th>
           <th>Subject</th>
           <th>Marks</th>
-          <th>Progress</th>
         </tr>
-
         <tr>
           <td>Ali</td>
           <td>Math</td>
           <td>85</td>
-          <td>
-            <div class="bar"><div class="fill" style="width:85%"></div></div>
-          </td>
         </tr>
-
         <tr>
           <td>Ahmed</td>
           <td>Science</td>
           <td>72</td>
-          <td>
-            <div class="bar"><div class="fill" style="width:72%"></div></div>
-          </td>
         </tr>
-
-        <tr>
-          <td>Sara</td>
-          <td>English</td>
-          <td>91</td>
-          <td>
-            <div class="bar"><div class="fill" style="width:91%"></div></div>
-          </td>
-        </tr>
-
       </table>
     </div>
 
-    <!-- TEACHER PANEL -->
-    <div class="card">
-      <h3>Teacher Panel</h3>
-      <p style="color:#8aa0b6;font-size:13px;">Quick actions</p>
+    <!-- TEACHER -->
+    <div id="teacher" class="hidden">
+      <h2>Teacher Panel</h2>
 
-      <button class="action">Add Student</button>
-      <button class="action">Enter Marks</button>
-      <button class="action">Mark Attendance</button>
-      <button class="action">Generate Report</button>
+      <div class="box">
+        <p>Add Students / Enter Marks / Attendance</p>
+        <button style="margin-top:10px;">+ Add Student</button>
+      </div>
     </div>
 
   </div>
-
 </div>
+
+<script>
+function login(){
+  document.getElementById("loginPage").style.display="none";
+  document.getElementById("dashboard").style.display="flex";
+}
+
+function logout(){
+  document.getElementById("dashboard").style.display="none";
+  document.getElementById("loginPage").style.display="flex";
+}
+
+function showSection(id){
+  document.querySelectorAll(".main > div").forEach(d=>d.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+</script>
 
 </body>
 </html>

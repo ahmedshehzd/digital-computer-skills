@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Computer Skill</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.31.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#f4f6f8;min-height:100vh;color:#1a1a1a}
+.app{max-width:960px;margin:0 auto;padding:1.25rem 1rem}
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem;background:#f4f6f8}
+.login-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:2.5rem 2rem;width:100%;max-width:400px;box-shadow:0 4px 24px rgba(0,0,0,0.07)}
+.login-tabs{display:flex;margin-bottom:1.5rem;border:1px solid #e5e7eb;border-radius:10px;overflow:hidden}
+.tab-btn{flex:1;padding:9px;font-size:13px;background:none;border:none;cursor:pointer;color:#6b7280}
+.tab-btn.active{background:#1D9E75;color:#fff;font-weight:500}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:13px;color:#6b7280;margin-bottom:5px;font-weight:500}
+.form-group input,.form-group select{width:100%;padding:10px 13px;border:1px solid #d1d5db;border-radius:9px;font-size:14px;background:#fff;color:#1a1a1a;outline:none;transition:border-color 0.2s}
+.form-group input:focus{border-color:#1D9E75;box-shadow:0 0 0 3px rgba(29,158,117,0.12)}
+.btn-green{width:100%;padding:11px;background:#1D9E75;color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;transition:background 0.2s}
+.btn-green:hover{background:#0F6E56}
+.err-msg{font-size:12px;color:#ef4444;margin-top:8px;text-align:center}
+.hidden{display:none!important}
+.header{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1rem 1.25rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.hlogo{width:40px;height:40px;background:#1D9E75;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.hlogo i{color:#fff;font-size:22px}
+.htitle{font-size:15px;font-weight:600;color:#1a1a1a}
+.hsub{font-size:12px;color:#6b7280}
+.ubadge{font-size:12px;color:#6b7280;background:#f3f4f6;padding:4px 12px;border-radius:20px;border:1px solid #e5e7eb}
+.btn-logout{font-size:12px;color:#ef4444;background:none;border:1px solid #fca5a5;border-radius:8px;padding:5px 12px;cursor:pointer}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:1.25rem}
+.stat-card{background:#f9fafb;border-radius:10px;padding:0.875rem 1rem;border:1px solid #e5e7eb}
+.stat-lbl{font-size:12px;color:#6b7280;margin-bottom:4px}
+.stat-val{font-size:24px;font-weight:700;color:#1a1a1a}
+.nav-tabs{display:flex;gap:4px;margin-bottom:1.25rem;background:#f3f4f6;border-radius:11px;padding:4px;border:1px solid #e5e7eb}
+.nav-tab{flex:1;padding:8px 4px;font-size:13px;background:none;border:none;border-radius:7px;cursor:pointer;color:#6b7280;font-weight:500}
+.nav-tab.active{background:#fff;color:#1a1a1a;font-weight:600;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.card-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px}
+.card-title{font-size:15px;font-weight:600;color:#1a1a1a}
+.search-inp{padding:8px 13px;border:1px solid #d1d5db;border-radius:9px;font-size:13px;background:#f9fafb;color:#1a1a1a;outline:none;width:190px}
+.s-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #f3f4f6;flex-wrap:wrap}
+.s-row:last-child{border-bottom:none}
+.s-avatar{width:38px;height:38px;border-radius:50%;background:#d1fae5;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#065f46;flex-shrink:0}
+.s-info{min-width:115px;flex:0 0 115px}
+.s-name{font-size:14px;font-weight:600;color:#1a1a1a}
+.s-meta{font-size:11px;color:#6b7280;margin-top:2px}
+.prog-bars{flex:2;min-width:180px}
+.prog-row{display:flex;align-items:center;gap:6px;margin-bottom:4px}
+.prog-lbl{font-size:11px;color:#6b7280;width:58px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prog-bg{flex:1;height:7px;background:#f3f4f6;border-radius:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px}
+.prog-pct{font-size:11px;color:#6b7280;width:30px;text-align:right;font-weight:600}
+.btn-sm{font-size:12px;background:none;border:1px solid #d1d5db;border-radius:8px;padding:5px 10px;cursor:pointer;color:#6b7280;white-space:nowrap;font-weight:500}
+.btn-sm:hover{border-color:#1D9E75;color:#1D9E75;background:#f0fdf9}
+.edit-panel{background:#f0fdf9;border:1px solid #6ee7b7;border-radius:14px;padding:1.25rem;margin-bottom:1rem}
+.edit-title{font-size:14px;font-weight:600;color:#065f46;margin-bottom:1rem}
+.course-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:1rem}
+.course-item label{display:block;font-size:12px;color:#047857;margin-bottom:4px;font-weight:500}
+.score-inp{width:100%;padding:8px 10px;border:1px solid #6ee7b7;border-radius:8px;font-size:14px;background:#fff;color:#1a1a1a}
+.edit-actions{display:flex;gap:8px}
+.btn-save{padding:9px 20px;background:#1D9E75;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+.btn-cancel{padding:9px 14px;background:none;border:1px solid #6ee7b7;border-radius:8px;font-size:13px;color:#047857;cursor:pointer}
+.checklist-panel{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.cl-header{display:flex;align-items:center;gap:12px;margin-bottom:1.25rem}
+.cl-avatar{width:44px;height:44px;border-radius:50%;background:#d1fae5;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#065f46;flex-shrink:0}
+.cl-name{font-size:16px;font-weight:600;color:#1a1a1a}
+.cl-sub{font-size:12px;color:#6b7280;margin-top:2px}
+.course-section{margin-bottom:1.5rem}
+.cs-title{font-size:13px;font-weight:600;color:#374151;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.cs-icon{width:24px;height:24px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.cs-icon i{font-size:14px}
+.task-item{display:flex;align-items:center;gap:10px;padding:8px 11px;border-radius:9px;margin-bottom:4px;background:#f9fafb;cursor:pointer;user-select:none;transition:background 0.15s;border:1px solid transparent}
+.task-item:hover{background:#f0fdf9;border-color:#a7f3d0}
+.task-cb{width:20px;height:20px;border-radius:5px;border:2px solid #d1d5db;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s}
+.task-cb.checked{background:#1D9E75;border-color:#1D9E75}
+.task-cb.checked i{color:#fff;font-size:12px}
+.task-text{font-size:13px;color:#374151;flex:1;line-height:1.4}
+.task-text.done{text-decoration:line-through;color:#9ca3af}
+.task-date{font-size:11px;color:#9ca3af;white-space:nowrap}
+.prog-summary{display:flex;align-items:center;gap:8px;margin-top:6px;margin-bottom:10px}
+.ps-bar-bg{flex:1;height:7px;background:#f3f4f6;border-radius:4px;overflow:hidden}
+.ps-bar-fill{height:100%;border-radius:4px;transition:width 0.3s}
+.ps-text{font-size:12px;color:#6b7280;white-space:nowrap;font-weight:600;min-width:32px}
+.lb-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #f3f4f6}
+.lb-row:last-child{border-bottom:none}
+.lb-rank{width:30px;text-align:center;font-size:15px;font-weight:700}
+.lb-name{flex:1;font-size:14px;color:#1a1a1a;font-weight:500}
+.lb-score{font-size:14px;font-weight:700;color:#1a1a1a;min-width:40px;text-align:right}
+.lb-bar{width:90px;height:7px;background:#f3f4f6;border-radius:4px;overflow:hidden}
+.sdash-top{background:#1D9E75;border-radius:14px;padding:1.75rem;margin-bottom:1.25rem;color:#fff}
+.sdash-name{font-size:22px;font-weight:700}
+.sdash-sub{font-size:13px;opacity:.85;margin-top:3px}
+.sdash-avg{font-size:36px;font-weight:700;margin-top:1rem}
+.sdash-lbl{font-size:12px;opacity:.8;margin-top:2px}
+.s-course-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin-bottom:1.25rem}
+.scc{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1rem;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.scc-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.scc-icon i{font-size:21px}
+.scc-name{font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:5px}
+.scc-score{font-size:28px;font-weight:700}
+.scc-lbl{font-size:11px;color:#6b7280}
+.scc-bar-bg{height:7px;background:#f3f4f6;border-radius:4px;margin-top:8px;overflow:hidden}
+.scc-bar-fill{height:100%;border-radius:4px}
+.grade-pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;margin-top:6px}
+.tpm-label{font-size:11px;color:#6b7280;margin-top:9px;margin-bottom:3px}
+.tpm-bar{height:5px;background:#f3f4f6;border-radius:3px;overflow:hidden}
+.tpm-fill{height:100%;border-radius:3px}
+@media(max-width:600px){.s-row{flex-direction:column;align-items:flex-start}.prog-bars{width:100%}.s-course-cards{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div id="login-screen" class="login-wrap">
+  <div class="login-card">
+    <div style="text-align:center;margin-bottom:2rem">
+      <div style="width:60px;height:60px;background:#1D9E75;border-radius:15px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;box-shadow:0 4px 12px rgba(29,158,117,0.3)">
+        <i class="ti ti-device-laptop" style="font-size:32px;color:#fff"></i>
+      </div>
+      <div style="font-size:22px;font-weight:700;color:#1a1a1a">Digital Computer Skill</div>
+      <div style="font-size:13px;color:#6b7280;margin-top:4px">MS Excel · Canva · Amazon · Fiverr</div>
+    </div>
+    <div class="login-tabs">
+      <button class="tab-btn active" onclick="switchLoginTab('teacher')"><i class="ti ti-user-shield"></i> Teacher</button>
+      <button class="tab-btn" onclick="switchLoginTab('student')"><i class="ti ti-school"></i> Student</button>
+    </div>
+    <div id="teacher-login">
+      <div class="form-group"><label>Username</label><input type="text" id="t-user" placeholder="teacher"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="t-pass" placeholder="••••••"></div>
+      <button class="btn-green" onclick="loginTeacher()"><i class="ti ti-login"></i> Teacher Login</button>
+      <p class="err-msg hidden" id="t-err">Username ya password galat hai</p>
+    </div>
+    <div id="student-login" class="hidden">
+      <div class="form-group"><label>Apna naam select karein</label><select id="s-select"></select></div>
+      <div class="form-group"><label>Password</label><input type="password" id="s-pass" placeholder="••••••"></div>
+      <button class="btn-green" onclick="loginStudent()"><i class="ti ti-login"></i> Student Login</button>
+      <p class="err-msg hidden" id="s-err">Password galat hai</p>
+    </div>
+  </div>
+</div>
+
+<div id="main-app" class="app hidden">
+  <div class="header">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="hlogo"><i class="ti ti-device-laptop"></i></div>
+      <div>
+        <div class="htitle">Digital Computer Skill</div>
+        <div class="hsub">MS Excel · Canva · Amazon · Fiverr</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="ubadge" id="user-badge">Teacher</span>
+      <button class="btn-logout" onclick="logout()"><i class="ti ti-logout"></i> Logout</button>
+    </div>
+  </div>
+
+  <div id="teacher-view" class="hidden">
+    <div class="stats-grid" id="stats-grid"></div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('students')"><i class="ti ti-users"></i> Students</button>
+      <button class="nav-tab" onclick="switchTab('checklist')"><i class="ti ti-list-check"></i> Task Checklist</button>
+      <button class="nav-tab" onclick="switchTab('leaderboard')"><i class="ti ti-trophy"></i> Leaderboard</button>
+    </div>
+    <div id="tab-students">
+      <div class="card">
+        <div class="card-hdr">
+          <span class="card-title">All Students (20)</span>
+          <input class="search-inp" type="text" placeholder="🔍 Search student..." oninput="filterStudents(this.value)">
+        </div>
+        <div id="students-list"></div>
+      </div>
+      <div id="edit-panel" class="hidden"></div>
+    </div>
+    <div id="tab-checklist" class="hidden">
+      <div class="card">
+        <div class="card-hdr">
+          <span class="card-title">Student task checklist</span>
+          <select id="cl-student-select" style="padding:7px 12px;border:1px solid #d1d5db;border-radius:9px;font-size:13px;background:#f9fafb;color:#1a1a1a" onchange="renderChecklist()"></select>
+        </div>
+      </div>
+      <div id="checklist-content"></div>
+    </div>
+    <div id="tab-leaderboard" class="hidden">
+      <div class="card">
+        <div class="card-hdr"><span class="card-title">Overall leaderboard</span></div>
+        <div id="leaderboard-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="student-view" class="hidden">
+    <div id="student-dash"></div>
+  </div>
+</div>
+
+<script>
+const COURSES=[
+  {id:'excel',name:'MS Excel',color:'#1D9E75',bg:'#d1fae5',icon:'ti-table'},
+  {id:'canva',name:'Canva',color:'#D85A30',bg:'#fee2e2',icon:'ti-palette'},
+  {id:'amazon',name:'Amazon',color:'#b45309',bg:'#fef3c7',icon:'ti-shopping-cart'},
+  {id:'fiverr',name:'Fiverr',color:'#1d4ed8',bg:'#dbeafe',icon:'ti-briefcase'},
+];
+const TASKS={
+  excel:['Excel interface aur navigation seekha','Basic formulas (SUM, AVERAGE, COUNT)','Cell formatting aur styles','Sorting aur filtering','IF formula aur conditions','VLOOKUP / HLOOKUP','Charts aur graphs banana','Pivot tables banana','Data validation','Print settings aur page layout'],
+  canva:['Canva account setup kiya','Basic design tools seekhe','Social media post design','Logo design kiya','Presentation template banaya','Flyer / poster design','Brand kit use karna seekha','Animations add karna','PDF export kiya','Team sharing feature use kiya'],
+  amazon:['Amazon seller account samjha','Product research tools seekhe','Niche selection kiya','Competitor analysis kiya','Product listing banaya','Keywords aur SEO','Pricing strategy samjhi','FBA vs FBM samjha','Review management','Advertising (PPC) seekha'],
+  fiverr:['Fiverr account setup kiya','Profile optimize kiya','Pehla gig banaya','Gig thumbnail design kiya','Gig description likhi','Pricing packages set kiye','Pehla order receive kiya','Client communication seekhi','Order deliver kiya','Review aur rating mili'],
+};
+const NAMES=['Ali Hassan','Zara Ahmed','Bilal Khan','Fatima Malik','Usman Shah','Ayesha Butt','Hamza Raza','Sana Iqbal','Tariq Mehmood','Nadia Javed','Adnan Mirza','Hina Qureshi','Kamran Baig','Saima Nawaz','Faisal Cheema','Maria Siddiqui','Rizwan Lodhi','Amna Wahid','Shahid Ansari','Rabia Farooq'];
+const TEACHER_PASS='628628';
+const STUDENT_PASS='student';
+
+let students=NAMES.map((name,i)=>{
+  let scores={};COURSES.forEach(c=>{scores[c.id]=0;});
+  let tasks={};COURSES.forEach(c=>{tasks[c.id]=TASKS[c.id].map(()=>({done:false,date:null}));});
+  return{id:i+1,name,scores,tasks};
+});
+
+let currentRole=null,currentStudentId=null,editingId=null,activeTab='students';
+function avg(scores){return Math.round(COURSES.map(c=>scores[c.id]).reduce((a,b)=>a+b,0)/COURSES.length);}
+function taskCompletion(tasks,cid){const t=tasks[cid];return Math.round(t.filter(x=>x.done).length/t.length*100);}
+function overallTaskPct(tasks){let done=0,total=0;COURSES.forEach(c=>{done+=tasks[c.id].filter(x=>x.done).length;total+=tasks[c.id].length;});return Math.round(done/total*100);}
+function grade(s){
+  if(s>=90)return{g:'A+',bg:'#d1fae5',col:'#065f46'};
+  if(s>=80)return{g:'A',bg:'#dcfce7',col:'#166534'};
+  if(s>=70)return{g:'B',bg:'#dbeafe',col:'#1e40af'};
+  if(s>=60)return{g:'C',bg:'#fef9c3',col:'#854d0e'};
+  return{g:'D',bg:'#fee2e2',col:'#991b1b'};
+}
+function switchLoginTab(type){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',(i===0)===(type==='teacher')));
+  document.getElementById('teacher-login').classList.toggle('hidden',type!=='teacher');
+  document.getElementById('student-login').classList.toggle('hidden',type!=='student');
+}
+function populateSelects(){
+  const html=students.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+  document.getElementById('s-select').innerHTML=html;
+  document.getElementById('cl-student-select').innerHTML=html;
+}
+function loginTeacher(){
+  if(document.getElementById('t-user').value==='teacher'&&document.getElementById('t-pass').value===TEACHER_PASS){currentRole='teacher';showApp();}
+  else document.getElementById('t-err').classList.remove('hidden');
+}
+function loginStudent(){
+  if(document.getElementById('s-pass').value===STUDENT_PASS){currentRole='student';currentStudentId=parseInt(document.getElementById('s-select').value);showApp();}
+  else document.getElementById('s-err').classList.remove('hidden');
+}
+function showApp(){
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('main-app').classList.remove('hidden');
+  if(currentRole==='teacher'){
+    document.getElementById('user-badge').textContent='Teacher';
+    document.getElementById('teacher-view').classList.remove('hidden');
+    document.getElementById('student-view').classList.add('hidden');
+    renderStats();renderStudentsList();
+  } else {
+    const st=students.find(s=>s.id===currentStudentId);
+    document.getElementById('user-badge').textContent=st.name;
+    document.getElementById('teacher-view').classList.add('hidden');
+    document.getElementById('student-view').classList.remove('hidden');
+    renderStudentDash(st);
+  }
+}
+function logout(){
+  currentRole=null;currentStudentId=null;editingId=null;
+  document.getElementById('login-screen').classList.remove('hidden');
+  document.getElementById('main-app').classList.add('hidden');
+  document.getElementById('teacher-view').classList.add('hidden');
+  document.getElementById('t-err').classList.add('hidden');
+  document.getElementById('s-err').classList.add('hidden');
+}
+function renderStats(){
+  const avgs=students.map(s=>avg(s.scores));
+  const classAvg=Math.round(avgs.reduce((a,b)=>a+b,0)/avgs.length);
+  const top=Math.max(...avgs);
+  const passing=avgs.filter(a=>a>=60).length;
+  const taskAvg=Math.round(students.map(s=>overallTaskPct(s.tasks)).reduce((a,b)=>a+b,0)/students.length);
+  document.getElementById('stats-grid').innerHTML=`
+    <div class="stat-card"><div class="stat-lbl">Total students</div><div class="stat-val">20</div></div>
+    <div class="stat-card"><div class="stat-lbl">Class average</div><div class="stat-val">${classAvg}%</div></div>
+    <div class="stat-card"><div class="stat-lbl">Top score</div><div class="stat-val">${top}%</div></div>
+    <div class="stat-card"><div class="stat-lbl">Task completion</div><div class="stat-val">${taskAvg}%</div></div>
+    <div class="stat-card"><div class="stat-lbl">Passing</div><div class="stat-val">${passing}/20</div></div>`;
+}
+function renderStudentsList(filter=''){
+  const filtered=filter?students.filter(s=>s.name.toLowerCase().includes(filter.toLowerCase())):students;
+  document.getElementById('students-list').innerHTML=filtered.map(s=>{
+    const initials=s.name.split(' ').map(w=>w[0]).join('').slice(0,2);
+    const bars=COURSES.map(c=>`<div class="prog-row"><span class="prog-lbl">${c.name}</span><div class="prog-bg"><div class="prog-fill" style="width:${s.scores[c.id]}%;background:${c.color}"></div></div><span class="prog-pct">${s.scores[c.id]}%</span></div>`).join('');
+    const tp=overallTaskPct(s.tasks);
+    return `<div class="s-row">
+      <div class="s-avatar">${initials}</div>
+      <div class="s-info"><div class="s-name">${s.name}</div><div class="s-meta">Quiz avg: ${avg(s.scores)}% · Tasks: ${tp}%</div></div>
+      <div class="prog-bars">${bars}</div>
+      <div style="display:flex;gap:6px;flex-shrink:0">
+        <button class="btn-sm" onclick="openEdit(${s.id})"><i class="ti ti-edit"></i> Scores</button>
+        <button class="btn-sm" onclick="openStudentChecklist(${s.id})"><i class="ti ti-list-check"></i> Tasks</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function filterStudents(val){renderStudentsList(val);}
+function openEdit(id){
+  editingId=id;
+  const s=students.find(x=>x.id===id);
+  const fields=COURSES.map(c=>`<div class="course-item"><label>${c.name} score (%)</label><input class="score-inp" type="number" min="0" max="100" id="edit-${c.id}" value="${s.scores[c.id]}"></div>`).join('');
+  document.getElementById('edit-panel').innerHTML=`<div class="edit-panel">
+    <div class="edit-title"><i class="ti ti-edit"></i> ${s.name} ki scores update karein</div>
+    <div class="course-grid">${fields}</div>
+    <div class="edit-actions"><button class="btn-save" onclick="saveEdit()"><i class="ti ti-check"></i> Save</button><button class="btn-cancel" onclick="cancelEdit()">Cancel</button></div>
+  </div>`;
+  document.getElementById('edit-panel').classList.remove('hidden');
+  document.getElementById('edit-panel').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function saveEdit(){
+  const s=students.find(x=>x.id===editingId);
+  COURSES.forEach(c=>{const v=parseInt(document.getElementById('edit-'+c.id).value);s.scores[c.id]=Math.min(100,Math.max(0,isNaN(v)?0:v));});
+  cancelEdit();renderStats();renderStudentsList();renderLeaderboard();
+}
+function cancelEdit(){editingId=null;document.getElementById('edit-panel').classList.add('hidden');}
+function switchTab(tab){
+  activeTab=tab;
+  document.querySelectorAll('.nav-tab').forEach((b,i)=>b.classList.toggle('active',['students','checklist','leaderboard'][i]===tab));
+  document.getElementById('tab-students').classList.toggle('hidden',tab!=='students');
+  document.getElementById('tab-checklist').classList.toggle('hidden',tab!=='checklist');
+  document.getElementById('tab-leaderboard').classList.toggle('hidden',tab!=='leaderboard');
+  if(tab==='leaderboard')renderLeaderboard();
+  if(tab==='checklist')renderChecklist();
+}
+function openStudentChecklist(id){document.getElementById('cl-student-select').value=id;switchTab('checklist');}
+function renderChecklist(){
+  const id=parseInt(document.getElementById('cl-student-select').value);
+  const s=students.find(x=>x.id===id);
+  const initials=s.name.split(' ').map(w=>w[0]).join('').slice(0,2);
+  const overall=overallTaskPct(s.tasks);
+  const sections=COURSES.map(c=>{
+    const items=s.tasks[c.id].map((task,ti)=>`
+      <div class="task-item" onclick="toggleTask(${s.id},'${c.id}',${ti})">
+        <div class="task-cb ${task.done?'checked':''}"><i class="ti ti-check"></i></div>
+        <span class="task-text ${task.done?'done':''}">${TASKS[c.id][ti]}</span>
+        ${task.done&&task.date?`<span class="task-date">${task.date}</span>`:''}
+      </div>`).join('');
+    const done=s.tasks[c.id].filter(x=>x.done).length;
+    const pct=Math.round(done/10*100);
+    return `<div class="course-section">
+      <div class="cs-title">
+        <span class="cs-icon" style="background:${c.bg}"><i class="ti ${c.icon}" style="color:${c.color}"></i></span>
+        ${c.name}
+        <span style="font-size:11px;background:${c.bg};color:${c.color};padding:2px 9px;border-radius:20px;margin-left:4px;font-weight:700">${done}/10</span>
+      </div>
+      <div class="prog-summary">
+        <div class="ps-bar-bg"><div class="ps-bar-fill" style="width:${pct}%;background:${c.color}"></div></div>
+        <span class="ps-text">${pct}%</span>
+      </div>
+      ${items}
+    </div>`;
+  }).join('');
+  document.getElementById('checklist-content').innerHTML=`<div class="checklist-panel">
+    <div class="cl-header">
+      <div class="cl-avatar">${initials}</div>
+      <div><div class="cl-name">${s.name}</div><div class="cl-sub">Overall task completion: <strong>${overall}%</strong></div></div>
+    </div>
+    ${sections}
+  </div>`;
+}
+function toggleTask(studentId,courseId,taskIndex){
+  const s=students.find(x=>x.id===studentId);
+  s.tasks[courseId][taskIndex].done=!s.tasks[courseId][taskIndex].done;
+  if(s.tasks[courseId][taskIndex].done&&!s.tasks[courseId][taskIndex].date){
+    s.tasks[courseId][taskIndex].date=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short'});
+  }
+  renderChecklist();renderStats();
+}
+function renderLeaderboard(){
+  const sorted=[...students].sort((a,b)=>avg(b.scores)-avg(a.scores));
+  document.getElementById('leaderboard-list').innerHTML=sorted.map((s,i)=>{
+    const a=avg(s.scores);
+    const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}`;
+    const rc=i===0?'color:#b45309':i===1?'color:#6b7280':i===2?'color:#16a34a':'color:#6b7280';
+    return `<div class="lb-row">
+      <div class="lb-rank" style="${rc}">${medal}</div>
+      <div class="s-avatar" style="width:34px;height:34px;font-size:12px;flex-shrink:0">${s.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+      <div class="lb-name">${s.name}</div>
+      <div class="lb-bar"><div style="height:100%;border-radius:4px;background:#1D9E75;width:${a}%"></div></div>
+      <div class="lb-score">${a}%</div>
+    </div>`;
+  }).join('');
+}
+function renderStudentDash(s){
+  const a=avg(s.scores);const g=grade(a);
+  const rank=[...students].sort((a2,b2)=>avg(b2.scores)-avg(a2.scores)).findIndex(x=>x.id===s.id)+1;
+  const tp=overallTaskPct(s.tasks);
+  const courseCards=COURSES.map(c=>{
+    const sc=s.scores[c.id];const cg=grade(sc);const tpct=taskCompletion(s.tasks,c.id);const tdone=s.tasks[c.id].filter(x=>x.done).length;
+    return `<div class="scc">
+      <div class="scc-icon" style="background:${c.bg}"><i class="ti ${c.icon}" style="color:${c.color}"></i></div>
+      <div class="scc-name">${c.name}</div>
+      <div class="scc-score" style="color:${c.color}">${sc}</div>
+      <div class="scc-lbl">Quiz score</div>
+      <div class="scc-bar-bg"><div class="scc-bar-fill" style="width:${sc}%;background:${c.color}"></div></div>
+      <span class="grade-pill" style="background:${cg.bg};color:${cg.col}">Grade ${cg.g}</span>
+      <div class="tpm-label">${tdone}/10 tasks done</div>
+      <div class="tpm-bar"><div class="tpm-fill" style="width:${tpct}%;background:${c.color}"></div></div>
+    </div>`;
+  }).join('');
+  const taskSections=COURSES.map(c=>{
+    const items=s.tasks[c.id].map((task,ti)=>`
+      <div class="task-item" style="pointer-events:none;cursor:default">
+        <div class="task-cb ${task.done?'checked':''}"><i class="ti ti-check"></i></div>
+        <span class="task-text ${task.done?'done':''}">${TASKS[c.id][ti]}</span>
+        ${task.done&&task.date?`<span class="task-date">${task.date}</span>`:''}
+      </div>`).join('');
+    const done=s.tasks[c.id].filter(x=>x.done).length;
+    const pct=Math.round(done/10*100);
+    return `<div class="course-section">
+      <div class="cs-title">
+        <span class="cs-icon" style="background:${c.bg}"><i class="ti ${c.icon}" style="color:${c.color}"></i></span>
+        ${c.name}
+        <span style="font-size:11px;background:${c.bg};color:${c.color};padding:2px 9px;border-radius:20px;margin-left:4px;font-weight:700">${done}/10</span>
+      </div>
+      <div class="prog-summary">
+        <div class="ps-bar-bg"><div class="ps-bar-fill" style="width:${pct}%;background:${c.color}"></div></div>
+        <span class="ps-text">${pct}%</span>
+      </div>
+      ${items}
+    </div>`;
+  }).join('');
+  document.getElementById('student-dash').innerHTML=`
+    <div class="sdash-top">
+      <div class="sdash-name">Assalam o Alaikum, ${s.name.split(' ')[0]}!</div>
+      <div class="sdash-sub">Aapki class progress</div>
+      <div class="sdash-avg">${a}%</div>
+      <div class="sdash-lbl">Quiz average · Grade ${g.g} · Rank #${rank} in class · Tasks: ${tp}% complete</div>
+    </div>
+    <div class="s-course-cards">${courseCards}</div>
+    <div class="card">
+      <div class="card-hdr"><span class="card-title">Meri task checklist</span></div>
+      ${taskSections}
+    </div>`;
+}
+populateSelects();
+</script>
+</body>
+</html>

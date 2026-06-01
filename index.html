@@ -3,107 +3,80 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>School System</title>
+<title>School System Fixed</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg:#05060a;
-  --panel:rgba(255,255,255,0.06);
-  --stroke:rgba(255,255,255,0.12);
-  --neon:#00ffd5;
-  --pink:#ff2bd6;
-  --text:#e7e7ff;
-}
-
-*{margin:0;padding:0;box-sizing:border-box;font-family:"Space Grotesk",sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Space Grotesk";}
 
 body{
-  background: radial-gradient(circle at top, #0b1020, #05060a);
-  color:var(--text);
+  background:#05060a;
+  color:white;
   height:100vh;
-  overflow:hidden;
 }
 
-/* LOGIN SCREEN */
-.login{
+/* LOGIN */
+#login{
   height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  flex-direction:column;
 }
 
 .card{
-  width:360px;
-  padding:35px;
-  background:var(--panel);
-  border:1px solid var(--stroke);
-  border-radius:18px;
-  backdrop-filter:blur(15px);
+  width:350px;
+  padding:30px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:15px;
 }
-
-h2{margin-bottom:5px;}
-
-p{opacity:0.7;font-size:13px;margin-bottom:20px;}
 
 input{
   width:100%;
-  padding:12px;
+  padding:10px;
   margin:8px 0;
-  border-radius:10px;
-  border:1px solid var(--stroke);
-  background:rgba(0,0,0,0.3);
+  border-radius:8px;
+  border:1px solid #333;
+  background:#111;
   color:white;
-  outline:none;
 }
 
 button{
   width:100%;
-  padding:12px;
-  margin-top:15px;
+  padding:10px;
+  background:linear-gradient(90deg,#00ffd5,#ff2bd6);
   border:none;
   border-radius:10px;
-  background:linear-gradient(90deg,var(--neon),var(--pink));
-  color:#000;
-  font-weight:700;
+  font-weight:bold;
   cursor:pointer;
 }
 
 /* DASHBOARD */
-.dashboard{
+#dashboard{
   display:none;
   height:100vh;
-  display:flex;
 }
 
+/* SIDEBAR */
 .sidebar{
-  width:220px;
-  background:rgba(255,255,255,0.03);
-  border-right:1px solid var(--stroke);
-  padding:20px;
+  width:200px;
+  background:#0b0f1a;
+  padding:15px;
 }
 
-.logo{
-  color:var(--neon);
-  font-weight:700;
-  margin-bottom:20px;
-}
-
-.menu button{
+.sidebar button{
   width:100%;
+  margin:5px 0;
   padding:10px;
-  margin:6px 0;
   background:transparent;
   border:none;
   color:white;
   text-align:left;
   cursor:pointer;
-  border-radius:8px;
 }
 
-.menu button:hover{
+.sidebar button:hover{
   background:rgba(0,255,213,0.1);
 }
 
@@ -112,131 +85,78 @@ button{
   padding:20px;
 }
 
-.cardbox{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px;
+.section{
+  display:none;
 }
 
-.box{
-  padding:15px;
-  background:var(--panel);
-  border:1px solid var(--stroke);
-  border-radius:15px;
+.active{
+  display:block;
 }
 
-table{
-  width:100%;
-  margin-top:20px;
-  border-collapse:collapse;
-}
-
-th,td{
-  padding:10px;
-  border-bottom:1px solid rgba(255,255,255,0.1);
-}
-
-th{color:var(--neon);}
-
-/* hidden */
-.hidden{display:none;}
 </style>
 </head>
 
 <body>
 
 <!-- LOGIN -->
-<div id="loginPage" class="login">
+<div id="login">
   <div class="card">
-    <h2>Login Portal</h2>
-    <p>Student & Teacher System</p>
-
-    <input id="user" type="text" placeholder="Email or ID">
-    <input id="pass" type="password" placeholder="Password">
-
+    <h2>Login</h2>
+    <input placeholder="Email">
+    <input type="password" placeholder="Password">
     <button onclick="login()">Login</button>
   </div>
 </div>
 
 <!-- DASHBOARD -->
-<div id="dashboard" class="dashboard">
+<div id="dashboard">
 
-  <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="logo">SCHOOL OS</div>
-
-    <div class="menu">
-      <button onclick="showSection('home')">Dashboard</button>
-      <button onclick="showSection('marks')">Marks</button>
-      <button onclick="showSection('teacher')">Teacher Panel</button>
-      <button onclick="logout()">Logout</button>
-    </div>
+    <h3>Menu</h3>
+    <button onclick="show('home')">Dashboard</button>
+    <button onclick="show('marks')">Marks</button>
+    <button onclick="show('teacher')">Teacher</button>
+    <button onclick="logout()">Logout</button>
   </div>
 
-  <!-- MAIN -->
   <div class="main">
 
-    <!-- HOME -->
-    <div id="home">
-      <h2>Welcome 👋</h2>
-
-      <div class="cardbox">
-        <div class="box">Students: 1200</div>
-        <div class="box">Teachers: 80</div>
-        <div class="box">Performance: 78%</div>
-      </div>
+    <div id="home" class="section active">
+      <h2>Dashboard</h2>
+      <p>Welcome to system</p>
     </div>
 
-    <!-- MARKS -->
-    <div id="marks" class="hidden">
+    <div id="marks" class="section">
       <h2>Student Marks</h2>
-
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Subject</th>
-          <th>Marks</th>
-        </tr>
-        <tr>
-          <td>Ali</td>
-          <td>Math</td>
-          <td>85</td>
-        </tr>
-        <tr>
-          <td>Ahmed</td>
-          <td>Science</td>
-          <td>72</td>
-        </tr>
-      </table>
+      <p>Ali - 85</p>
+      <p>Ahmed - 72</p>
     </div>
 
-    <!-- TEACHER -->
-    <div id="teacher" class="hidden">
+    <div id="teacher" class="section">
       <h2>Teacher Panel</h2>
-
-      <div class="box">
-        <p>Add Students / Enter Marks / Attendance</p>
-        <button style="margin-top:10px;">+ Add Student</button>
-      </div>
+      <button>Add Student</button>
     </div>
 
   </div>
+
 </div>
 
 <script>
 function login(){
-  document.getElementById("loginPage").style.display="none";
+  document.getElementById("login").style.display="none";
   document.getElementById("dashboard").style.display="flex";
 }
 
 function logout(){
   document.getElementById("dashboard").style.display="none";
-  document.getElementById("loginPage").style.display="flex";
+  document.getElementById("login").style.display="flex";
 }
 
-function showSection(id){
-  document.querySelectorAll(".main > div").forEach(d=>d.classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
+function show(id){
+  document.querySelectorAll(".section").forEach(s=>{
+    s.classList.remove("active");
+  });
+  document.getElementById(id).classList.add("active");
 }
 </script>
 

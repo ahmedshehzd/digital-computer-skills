@@ -1,252 +1,279 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Teacher Class System</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>School Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
+:root{
+  --bg:#070A12;
+  --panel:rgba(255,255,255,0.06);
+  --stroke:rgba(255,255,255,0.12);
+  --text:#EAF2FF;
+  --muted:#8aa0b6;
+  --neon:#00ffd5;
+  --pink:#ff2bd6;
+  --yellow:#ffd000;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Space Grotesk",sans-serif;}
+
 body{
-font-family:Arial;
-background:#f4f4f4;
-margin:0;
-padding:0;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  height:100vh;
+  overflow:hidden;
 }
 
-.login-box,.dashboard{
-max-width:900px;
-margin:30px auto;
-background:white;
-padding:20px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,.1);
+/* SIDEBAR */
+.sidebar{
+  width:240px;
+  background:rgba(255,255,255,0.03);
+  border-right:1px solid var(--stroke);
+  padding:20px;
+  backdrop-filter:blur(15px);
 }
 
-input,textarea{
-width:100%;
-padding:10px;
-margin:5px 0;
+.logo{
+  font-weight:700;
+  letter-spacing:2px;
+  margin-bottom:30px;
+  color:var(--neon);
 }
 
-button{
-padding:10px 15px;
-background:#2563eb;
-color:white;
-border:none;
-cursor:pointer;
+.nav button{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border:none;
+  background:transparent;
+  color:var(--text);
+  text-align:left;
+  border-radius:10px;
+  cursor:pointer;
+  transition:0.3s;
 }
 
-.hidden{
-display:none;
+.nav button:hover{
+  background:rgba(0,255,213,0.08);
+  border-left:3px solid var(--neon);
 }
 
-.student-card{
-background:#eee;
-padding:10px;
-margin-top:10px;
-border-radius:5px;
+/* MAIN */
+.main{
+  flex:1;
+  padding:25px;
+  overflow:auto;
 }
 
-.progress{
-width:100%;
-background:#ddd;
-height:20px;
-border-radius:10px;
-overflow:hidden;
+/* TOP BAR */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
 }
 
+.badge{
+  padding:6px 12px;
+  border:1px solid var(--stroke);
+  border-radius:20px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--stroke);
+  border-radius:15px;
+  padding:18px;
+  backdrop-filter:blur(15px);
+  box-shadow:0 0 30px rgba(0,255,213,0.05);
+}
+
+/* BIG SECTION */
+.section{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:15px;
+}
+
+/* TABLE */
+table{
+  width:100%;
+  margin-top:10px;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:10px;
+  text-align:left;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  font-size:14px;
+}
+
+th{
+  color:var(--neon);
+  font-weight:600;
+}
+
+/* PROGRESS BAR */
 .bar{
-height:20px;
-background:green;
-width:0%;
+  height:8px;
+  background:rgba(255,255,255,0.08);
+  border-radius:10px;
+  overflow:hidden;
 }
+
+.fill{
+  height:100%;
+  background:linear-gradient(90deg,var(--neon),var(--pink));
+}
+
+/* TEACHER PANEL */
+.tag{
+  display:inline-block;
+  padding:4px 10px;
+  font-size:11px;
+  border-radius:20px;
+  margin-bottom:10px;
+}
+
+.teacher{border:1px solid var(--pink); color:var(--pink);}
+.student{border:1px solid var(--neon); color:var(--neon);}
+
+button.action{
+  margin-top:10px;
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(90deg,var(--neon),var(--pink));
+  color:#000;
+  font-weight:700;
+  cursor:pointer;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="login-box" id="loginPage">
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="logo">SCHOOL OS</div>
 
-<h2>Teacher Login</h2>
-
-<input type="text" id="username" placeholder="Username">
-
-<input type="password" id="password" placeholder="Password">
-
-<button onclick="login()">Login</button>
-
+  <div class="nav">
+    <button>🏠 Dashboard</button>
+    <button>📊 Student Marks</button>
+    <button>🧑‍🏫 Teacher Panel</button>
+    <button>📅 Attendance</button>
+    <button>⚙ Settings</button>
+  </div>
 </div>
 
-<div class="dashboard hidden" id="dashboard">
+<!-- MAIN -->
+<div class="main">
 
-<h1>Teacher Dashboard</h1>
+  <div class="topbar">
+    <h2>Dashboard Overview</h2>
+    <div class="badge">Session 2026 • Active</div>
+  </div>
 
-<h3>Add Student</h3>
+  <!-- STATS -->
+  <div class="grid">
 
-<input id="studentName" placeholder="Student Name">
+    <div class="card">
+      <div class="tag student">STUDENTS</div>
+      <h3>1,240</h3>
+      <p style="color:#8aa0b6;font-size:13px;">Total enrolled students</p>
+    </div>
 
-<input id="studentPass" placeholder="Student Password">
+    <div class="card">
+      <div class="tag teacher">TEACHERS</div>
+      <h3>86</h3>
+      <p style="color:#8aa0b6;font-size:13px;">Active faculty members</p>
+    </div>
 
-<button onclick="addStudent()">Add Student</button>
+    <div class="card">
+      <div class="tag" style="border-color:var(--yellow);color:var(--yellow);">AVERAGE</div>
+      <h3>78%</h3>
+      <p style="color:#8aa0b6;font-size:13px;">Overall performance</p>
+    </div>
 
-<hr>
+  </div>
 
-<div id="students"></div>
+  <!-- MAIN SECTION -->
+  <div class="section">
 
-</div>
+    <!-- STUDENT MARKS -->
+    <div class="card">
+      <h3>Student Marks</h3>
 
-<script>
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Subject</th>
+          <th>Marks</th>
+          <th>Progress</th>
+        </tr>
 
-let students=[];
+        <tr>
+          <td>Ali</td>
+          <td>Math</td>
+          <td>85</td>
+          <td>
+            <div class="bar"><div class="fill" style="width:85%"></div></div>
+          </td>
+        </tr>
 
-function login(){
+        <tr>
+          <td>Ahmed</td>
+          <td>Science</td>
+          <td>72</td>
+          <td>
+            <div class="bar"><div class="fill" style="width:72%"></div></div>
+          </td>
+        </tr>
 
-let user=document.getElementById("username").value;
-let pass=document.getElementById("password").value;
+        <tr>
+          <td>Sara</td>
+          <td>English</td>
+          <td>91</td>
+          <td>
+            <div class="bar"><div class="fill" style="width:91%"></div></div>
+          </td>
+        </tr>
 
-if(user==="Teacher" && pass==="628628"){
+      </table>
+    </div>
 
-document.getElementById("loginPage").classList.add("hidden");
-document.getElementById("dashboard").classList.remove("hidden");
+    <!-- TEACHER PANEL -->
+    <div class="card">
+      <h3>Teacher Panel</h3>
+      <p style="color:#8aa0b6;font-size:13px;">Quick actions</p>
 
-}else{
+      <button class="action">Add Student</button>
+      <button class="action">Enter Marks</button>
+      <button class="action">Mark Attendance</button>
+      <button class="action">Generate Report</button>
+    </div>
 
-alert("Wrong Username or Password");
-
-}
-
-}
-
-function addStudent(){
-
-let name=document.getElementById("studentName").value;
-let pass=document.getElementById("studentPass").value;
-
-if(name==="") return;
-
-students.push({
-name:name,
-pass:pass,
-course:"",
-tasks:[],
-notes:""
-});
-
-renderStudents();
-
-}
-
-function renderStudents(){
-
-let html="";
-
-students.forEach((s,index)=>{
-
-html+=`
-
-<div class="student-card">
-
-<h3>${s.name}</h3>
-
-<p><b>Password:</b> ${s.pass}</p>
-
-<input placeholder="Course Name"
-onchange="students[${index}].course=this.value">
-
-<input placeholder="Add Task"
-id="task${index}">
-
-<button onclick="addTask(${index})">
-Add Task
-</button>
-
-<div id="tasks${index}"></div>
-
-<br>
-
-<textarea
-placeholder="Teacher Notes"
-onchange="students[${index}].notes=this.value">
-</textarea>
-
-<div class="progress">
-
-<div class="bar" id="bar${index}"></div>
+  </div>
 
 </div>
-
-</div>
-
-`;
-
-});
-
-document.getElementById("students").innerHTML=html;
-
-}
-
-function addTask(i){
-
-let task=document.getElementById("task"+i).value;
-
-students[i].tasks.push({
-text:task,
-done:false
-});
-
-showTasks(i);
-
-}
-
-function showTasks(i){
-
-let html="";
-let done=0;
-
-students[i].tasks.forEach((t,x)=>{
-
-if(t.done) done++;
-
-html+=`
-<label>
-
-<input type="checkbox"
-onchange="toggleTask(${i},${x})"
-${t.done?"checked":""}>
-
-${t.text}
-
-</label><br>
-`;
-
-});
-
-document.getElementById("tasks"+i).innerHTML=html;
-
-let percent=0;
-
-if(students[i].tasks.length>0){
-
-percent=Math.round(
-(done/students[i].tasks.length)*100
-);
-
-}
-
-document.getElementById("bar"+i).style.width=
-percent+"%";
-
-}
-
-function toggleTask(i,x){
-
-students[i].tasks[x].done=
-!students[i].tasks[x].done;
-
-showTasks(i);
-
-}
-
-</script>
 
 </body>
 </html>

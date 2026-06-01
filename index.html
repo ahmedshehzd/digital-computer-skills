@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>School ERP + Student Profile</title>
+<title>Ahmed ERP System</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -21,6 +21,14 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
+  flex-direction:column;
+}
+
+.brand{
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:15px;
+  color:#00ffd5;
 }
 
 .card{
@@ -66,6 +74,10 @@ button{
   padding:15px;
 }
 
+.sidebar h2{
+  color:#00ffd5;
+}
+
 .sidebar button{
   width:100%;
   margin:5px 0;
@@ -75,12 +87,14 @@ button{
   color:white;
   text-align:left;
   cursor:pointer;
+  border-radius:8px;
 }
 
 .sidebar button:hover{
   background:rgba(0,255,213,0.1);
 }
 
+/* MAIN */
 .main{
   flex:1;
   padding:20px;
@@ -103,8 +117,11 @@ button{
 
 <!-- LOGIN -->
 <div id="login">
+
+  <div class="brand">Ahmed Digital ERP</div>
+
   <div class="card">
-    <h2>ERP Login</h2>
+    <h3>Login</h3>
 
     <input id="role" placeholder="student / teacher / admin">
     <input id="pass" type="password" placeholder="Password">
@@ -121,37 +138,46 @@ button{
 <div id="dashboard">
 
   <div class="sidebar">
-    <h3>MENU</h3>
+    <h2>MENU</h2>
 
     <button onclick="show('home')">Dashboard</button>
-    <button onclick="show('profile')">Student Profile</button>
-    <button onclick="show('view')">All Profiles</button>
+    <button onclick="show('work')">Work Panel</button>
     <button onclick="logout()">Logout</button>
   </div>
 
   <div class="main">
 
-    <!-- HOME -->
     <div id="home" class="section active">
       <h2 id="welcome"></h2>
     </div>
 
-    <!-- STUDENT PROFILE FORM -->
-    <div id="profile" class="section">
-      <h2>Student Profile Form</h2>
+    <div id="work" class="section">
 
-      <input id="name" placeholder="Name">
-      <input id="number" placeholder="Phone Number">
-      <input id="email" placeholder="Email">
-      <input id="course" placeholder="Course">
+      <div class="box">
+        <h3>Add Lesson</h3>
+        <input placeholder="Topic">
+        <input placeholder="Description">
+        <button onclick="action('lesson')">Add Lesson</button>
+      </div>
 
-      <button onclick="saveProfile()">Save Profile</button>
-    </div>
+      <div class="box">
+        <h3>Marks</h3>
+        <input placeholder="Student Name">
+        <input placeholder="Marks">
+        <button onclick="action('marks')">Save Marks</button>
+      </div>
 
-    <!-- VIEW PROFILES -->
-    <div id="view" class="section">
-      <h2>All Student Profiles</h2>
-      <div id="list"></div>
+      <div class="box">
+        <h3>Attendance</h3>
+        <button onclick="action('att')">Mark Attendance</button>
+      </div>
+
+      <div id="adminBox" class="box" style="display:none;">
+        <h3>🔴 Admin Control</h3>
+        <button>Delete Student</button>
+        <button>System Settings</button>
+      </div>
+
     </div>
 
   </div>
@@ -160,78 +186,46 @@ button{
 <script>
 
 let role="";
-let profiles=[];
 
 function login(){
+
   let r=document.getElementById("role").value;
   let p=document.getElementById("pass").value;
 
-  if((r==="student" && p==="111") ||
-     (r==="teacher" && p==="222") ||
-     (r==="admin" && p==="333")){
+  if(r==="student" && p==="111") role="student";
+  else if(r==="teacher" && p==="222") role="teacher";
+  else if(r==="admin" && p==="333") role="admin";
+  else return alert("Wrong login");
 
-    role=r;
+  document.getElementById("login").style.display="none";
+  document.getElementById("dashboard").style.display="flex";
 
-    document.getElementById("login").style.display="none";
-    document.getElementById("dashboard").style.display="flex";
+  document.getElementById("welcome").innerText =
+    "Welcome, " + role.toUpperCase();
 
-    document.getElementById("welcome").innerText="Welcome "+role.toUpperCase();
-
-  }else{
-    alert("Wrong Login");
+  if(role==="admin"){
+    document.getElementById("adminBox").style.display="block";
   }
 }
 
-function logout(){
-  document.getElementById("dashboard").style.display="none";
-  document.getElementById("login").style.display="flex";
+function action(type){
+
+  if(role==="student"){
+    alert("Access Denied");
+    return;
+  }
+
+  alert(type + " action executed");
 }
 
 function show(id){
   document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
-
-  if(id==="view") renderProfiles();
 }
 
-/* SAVE PROFILE (ONLY STUDENT) */
-function saveProfile(){
-
-  if(role!=="student"){
-    alert("Only students can add profile");
-    return;
-  }
-
-  let n=document.getElementById("name").value;
-  let num=document.getElementById("number").value;
-  let e=document.getElementById("email").value;
-  let c=document.getElementById("course").value;
-
-  profiles.push({n,num,e,c});
-
-  alert("Profile Saved!");
-}
-
-/* SHOW ALL PROFILES */
-function renderProfiles(){
-
-  let box=document.getElementById("list");
-  box.innerHTML="";
-
-  profiles.forEach(p=>{
-    box.innerHTML+=`
-      <div class="box">
-        <b>${p.n}</b><br>
-        📞 ${p.num}<br>
-        📧 ${p.e}<br>
-        📚 ${p.c}
-      </div>
-    `;
-  });
-
-  if(profiles.length===0){
-    box.innerHTML="No profiles yet";
-  }
+function logout(){
+  document.getElementById("dashboard").style.display="none";
+  document.getElementById("login").style.display="flex";
 }
 
 </script>

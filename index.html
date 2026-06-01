@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Student Progress System</title>
+<title>Digital Computer Skill System</title>
 <style>
 body{font-family:Arial;background:#f4f4f4;margin:0;padding:20px}
-.box{background:#fff;padding:15px;border-radius:10px;max-width:500px;margin:auto}
+.box{background:#fff;padding:15px;border-radius:10px;max-width:600px;margin:auto}
 input,button{width:100%;padding:10px;margin:5px 0}
 button{background:black;color:white;border:none;cursor:pointer}
 .hidden{display:none}
@@ -21,7 +21,7 @@ button{background:black;color:white;border:none;cursor:pointer}
 
 <h2>Login</h2>
 
-<input id="user" placeholder="Name">
+<input id="name" placeholder="Name">
 <input id="pass" placeholder="Password">
 
 <button onclick="teacherLogin()">Teacher Login</button>
@@ -31,16 +31,17 @@ button{background:black;color:white;border:none;cursor:pointer}
 
 <div id="teacherPanel" class="hidden">
 
-<h2>Teacher Panel</h2>
+<h2>Teacher Dashboard</h2>
 
-<input id="newStudent" placeholder="Add Student Name">
+<input id="newStudent" placeholder="New Student Name">
+<input id="newPass" placeholder="Set Password">
 <button onclick="addStudent()">Add Student</button>
 
 <div id="students"></div>
 
 <hr>
 
-<h3>Selected Student Tasks</h3>
+<h3>Tasks</h3>
 <input id="taskText" placeholder="Add Task">
 <button onclick="addTask()">Add Task</button>
 
@@ -53,7 +54,7 @@ button{background:black;color:white;border:none;cursor:pointer}
 
 <h3>Activity Log</h3>
 <input id="logText" placeholder="Work done">
-<input id="logDate" placeholder="Date (e.g 01-06-2026)">
+<input id="logDate" placeholder="Date">
 <button onclick="addLog()">Add Log</button>
 
 <div id="logs"></div>
@@ -67,32 +68,50 @@ button{background:black;color:white;border:none;cursor:pointer}
 let students = JSON.parse(localStorage.getItem("students")) || [];
 let selected = null;
 
+// TEACHER LOGIN
 function teacherLogin(){
  if(document.getElementById("pass").value === "628628"){
    document.getElementById("teacherPanel").classList.remove("hidden");
    loadStudents();
  } else {
-   alert("Wrong Password");
+   alert("Wrong Teacher Password");
  }
 }
 
+// STUDENT LOGIN
 function studentLogin(){
- alert("Student login demo (simple view)");
+ let name = document.getElementById("name").value;
+ let pass = document.getElementById("pass").value;
+
+ let user = students.find(s => s.name === name && s.pass === pass);
+
+ if(user){
+   alert("Student Login Success");
+   selected = students.indexOf(user);
+   loadTasks();
+   loadLogs();
+   document.getElementById("teacherPanel").classList.remove("hidden");
+ } else {
+   alert("Invalid Student Login");
+ }
 }
 
+// ADD STUDENT (NO DUPLICATE)
 function addStudent(){
  let name = document.getElementById("newStudent").value;
+ let pass = document.getElementById("newPass").value;
 
  if(students.find(s=>s.name===name)){
-   alert("Already exists");
+   alert("Student Already Exists");
    return;
  }
 
- students.push({name, tasks:[], logs:[]});
+ students.push({name, pass, tasks:[], logs:[]});
  localStorage.setItem("students", JSON.stringify(students));
  loadStudents();
 }
 
+// LOAD STUDENTS
 function loadStudents(){
  let div = document.getElementById("students");
  div.innerHTML="";
@@ -102,22 +121,25 @@ function loadStudents(){
  });
 }
 
+// SELECT STUDENT
 function selectStudent(i){
  selected = i;
  loadTasks();
  loadLogs();
 }
 
+// ADD TASK
 function addTask(){
  if(selected===null) return;
 
  let t = document.getElementById("taskText").value;
- students[selected].tasks.push({text:t,done:false});
 
+ students[selected].tasks.push({text:t,done:false});
  localStorage.setItem("students",JSON.stringify(students));
  loadTasks();
 }
 
+// LOAD TASKS + PROGRESS
 function loadTasks(){
  if(selected===null) return;
 
@@ -142,12 +164,14 @@ function loadTasks(){
  document.getElementById("percent").innerText = percent+"% Completed";
 }
 
+// TOGGLE TASK
 function toggleTask(i){
  students[selected].tasks[i].done = !students[selected].tasks[i].done;
  localStorage.setItem("students",JSON.stringify(students));
  loadTasks();
 }
 
+// ADD LOG
 function addLog(){
  if(selected===null) return;
 
@@ -159,6 +183,7 @@ function addLog(){
  loadLogs();
 }
 
+// LOAD LOGS
 function loadLogs(){
  if(selected===null) return;
 

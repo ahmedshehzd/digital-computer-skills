@@ -91,8 +91,8 @@
         .btn-student { background-color: #2ecc71; }
         .btn-student:hover { background-color: #27ae60; }
 
-        /* 2. DASHBOARD STYLES */
-        #teacher-dashboard {
+        /* 2. DASHBOARD COMMON STYLES */
+        #teacher-dashboard, #student-dashboard {
             display: none;
             max-width: 1100px;
             margin: 0 auto;
@@ -109,7 +109,7 @@
             margin-bottom: 30px;
         }
 
-        .add-progress-btn {
+        .add-progress-btn, .logout-btn {
             background-color: #e74c3c;
             color: white;
             border: none;
@@ -124,9 +124,13 @@
             box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
         }
 
-        .add-progress-btn:hover {
-            background-color: #c0392b;
+        .logout-btn {
+            background-color: #7f8c8d;
+            box-shadow: none;
         }
+
+        .add-progress-btn:hover { background-color: #c0392b; }
+        .logout-btn:hover { background-color: #616a6b; }
 
         .student-list-section {
             background: #fff;
@@ -229,11 +233,11 @@
                 <h3>🏫 Teacher Login</h3>
                 <div class="input-group">
                     <label>Teacher ID / Email</label>
-                    <input type="text" placeholder="e.g., teacher123" id="t-user">
+                    <input type="text" placeholder="Username: teacher123" id="t-user">
                 </div>
                 <div class="input-group">
                     <label>Password</label>
-                    <input type="password" placeholder="••••••••" id="t-pass">
+                    <input type="password" placeholder="Password: teach786" id="t-pass">
                 </div>
                 <button class="login-btn btn-teacher" onclick="loginAsTeacher()">Login as Teacher</button>
             </div>
@@ -242,35 +246,35 @@
                 <h3>🎓 Student Login</h3>
                 <div class="input-group">
                     <label>Roll Number / Email</label>
-                    <input type="text" placeholder="e.g., student55">
+                    <input type="text" placeholder="Username: student55" id="s-user">
                 </div>
                 <div class="input-group">
                     <label>Password</label>
-                    <input type="password" placeholder="••••••••">
+                    <input type="password" placeholder="Password: study123" id="s-pass">
                 </div>
-                <button class="login-btn btn-student" onclick="alert('Student portal is currently under development. Please test the Teacher Login!')">Login as Student</button>
+                <button class="login-btn btn-student" onclick="loginAsStudent()">Login as Student</button>
             </div>
 
         </div>
     </div>
 
     <div id="teacher-dashboard">
-        
         <header class="dashboard-header">
             <div>
                 <h1>🏫 Teacher Dashboard</h1>
                 <p>Instructor Panel | Computer Science Department</p>
             </div>
-            <button class="add-progress-btn" onclick="openModal()">
-                <span>➕</span> Add Student Progress
-            </button>
+            <div style="display: flex; gap: 10px;">
+                <button class="add-progress-btn" onclick="openModal()">
+                    <span>➕</span> Add Student Progress
+                </button>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
         </header>
 
         <section class="student-list-section">
             <h2>👥 Students Progress & Reports</h2>
-            
             <div id="students-container">
-                
                 <div class="progress-card">
                     <div class="student-details">
                         <h4>Anabiya Fatima</h4>
@@ -281,7 +285,6 @@
                         <span class="badge badge-success">Excellent Progress</span>
                     </div>
                 </div>
-
                 <div class="progress-card" style="border-left-color: #e67e22;">
                     <div class="student-details">
                         <h4>John Doe</h4>
@@ -292,7 +295,31 @@
                         <span class="badge" style="background: #fef9e7; color: #f39c12;">Average Progress</span>
                     </div>
                 </div>
+            </div>
+        </section>
+    </div>
 
+    <div id="student-dashboard">
+        <header class="dashboard-header">
+            <div>
+                <h1>🎓 Student Portal</h1>
+                <p>Welcome back to your learning space!</p>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </header>
+
+        <section class="student-list-section">
+            <h2>📊 Your Academic Report</h2>
+            <div class="progress-card" style="border-left-color: #2ecc71;">
+                <div class="student-details">
+                    <h4>Anabiya Fatima</h4>
+                    <p><strong>Enrolled Course:</strong> Web Development Basics (HTML/CSS)</p>
+                    <p><strong>Overall Attendance:</strong> 95%</p>
+                    <p><strong>Current Active Module:</strong> Advanced CSS Layouts & Forms</p>
+                </div>
+                <div>
+                    <span class="badge badge-success">Active Student</span>
+                </div>
             </div>
         </section>
     </div>
@@ -301,7 +328,6 @@
         <div class="modal-box">
             <span class="close-modal" onclick="closeModal()">&times;</span>
             <h3>➕ Add New Student Report</h3>
-            
             <div class="input-group">
                 <label>Student Name</label>
                 <input type="text" id="s-name" placeholder="Enter student name">
@@ -318,15 +344,51 @@
                 <label>Current Status / Topic</label>
                 <input type="text" id="s-status" placeholder="e.g., Learning CSS Grid">
             </div>
-
             <button class="submit-btn" onclick="addNewStudent()">Save Progress</button>
         </div>
     </div>
 
     <script>
+        // ٹیچر لاگ ان کی تصدیق کا فنکشن
         function loginAsTeacher() {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('teacher-dashboard').style.display = 'block';
+            let u = document.getElementById('t-user').value;
+            let p = document.getElementById('t-pass').value;
+
+            // یہاں ہم نے مخصوص یوزر اور پاس ورڈ میچ کیا ہے
+            if (u === 'teacher123' && p === 'teach786') {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('teacher-dashboard').style.display = 'block';
+                document.getElementById('student-dashboard').style.display = 'none';
+            } else {
+                alert("Invalid Teacher ID or Password!");
+            }
+        }
+
+        // اسٹوڈنٹ لاگ ان کی تصدیق کا فنکشن
+        function loginAsStudent() {
+            let u = document.getElementById('s-user').value;
+            let p = document.getElementById('s-pass').value;
+
+            // یہاں اسٹوڈنٹ کا مخصوص لاگ ان چیک ہو رہا ہے
+            if (u === 'student55' && p === 'study123') {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('teacher-dashboard').style.display = 'none';
+                document.getElementById('student-dashboard').style.display = 'block';
+            } else {
+                alert("Invalid Student Roll Number or Password!");
+            }
+        }
+
+        function logout() {
+            // ان پٹ فیلڈز کو خالی کر دیں تاکہ پرانا پاس ورڈ ہٹ جائے
+            document.getElementById('t-user').value = "";
+            document.getElementById('t-pass').value = "";
+            document.getElementById('s-user').value = "";
+            document.getElementById('s-pass').value = "";
+
+            document.getElementById('teacher-dashboard').style.display = 'none';
+            document.getElementById('student-dashboard').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'block';
         }
 
         function openModal() {
